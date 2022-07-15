@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MapLoaderService } from './map-loader.service';
+import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class StreetViewService {
   }
   panorama: any;
 
-  constructor(private loadMaps: MapLoaderService) { }
+  constructor(private loadMaps: MapLoaderService, private mapService: MapService) { }
 
   async setStreetView(panoramaElement: any){
     await this.loadMaps.load();
@@ -21,10 +22,9 @@ export class StreetViewService {
       pov: { heading: 0, pitch: 0 },
       showRoadLabels: false,
     })
-    console.log(this.panorama)
   }
 
   async updateStreetView(){
-
+    // mapservice.selectedmap => panorama
   }
 }

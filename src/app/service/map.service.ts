@@ -1,20 +1,28 @@
 import { Injectable } from '@angular/core';
 import { MapLoaderService } from './map-loader.service';
+import { RandomStreetviewService } from './random-streetview.service';
 import { RegionService } from './region.service';
 import { StreetViewService } from './street-view.service';
+
+export class Map{
+  constructor(public value: string, public viewValue: string, public lat: number, public lng: number){}
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
-  maps = Array(20).fill(0).map((v, i) => {return {value: i, viewValue: i+1}})
+  maps: Map[] = []
   generationTime = 10;
   selectedMap = this.maps[0];
 
-  constructor(private regionService: RegionService, private streetView: StreetViewService) { }
-
-  setStreetView(){
-
+  constructor(private regionService: RegionService, randomStreetView: RandomStreetviewService) {
+    // regionservice.selectedregion.border => generate maps with seed
+    randomStreetView.getRandomLocations(20).then(res => {
+      res.forEach((r: any, i) => {
+        this.maps.push(new Map((i+1).toString(), (i+1).toString(),  r[0], r[1]));
+      })
+    })
   }
 
   getCurrentGenerationSeed(){
