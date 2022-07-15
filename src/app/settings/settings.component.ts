@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MapService } from '../map.service';
+import { RegionService } from '../region.service';
 
 @Component({
   selector: 'app-settings',
@@ -8,16 +9,8 @@ import { MapService } from '../map.service';
 })
 export class SettingsComponent implements OnInit{
   timeLeft: {minutes: number, seconds: number};
-  regions = [
-    {value: 'world', viewValue: 'The World'},
-    {value: 'europe', viewValue: 'Europe'},
-  ]
-  maps = [
-    {value: '1', viewValue: '1'},
-    {value: '2', viewValue: '2'},
-  ]
 
-  constructor(private mapService: MapService) {
+  constructor(public mapService: MapService, public regionService: RegionService) {
     this.timeLeft = mapService.getTimeLeftToNextGeneraton();
   }
 
