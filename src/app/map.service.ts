@@ -12,7 +12,7 @@ export class MapService {
 
   getCurrentGenerationSeed(){
     const currentDate = new Date();
-    return `${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/10)}`
+    return `${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/10)}${this.selectedMap.value}`
   }
 
   getTimeLeftToNextGeneraton(){
