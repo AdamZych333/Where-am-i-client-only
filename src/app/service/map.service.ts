@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { MapLoaderService } from './map-loader.service';
+import { RegionService } from './region.service';
+import { StreetViewService } from './street-view.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +11,11 @@ export class MapService {
   generationTime = 10;
   selectedMap = this.maps[0];
 
-  constructor() { }
+  constructor(private regionService: RegionService, private streetView: StreetViewService) { }
+
+  setStreetView(){
+
+  }
 
   getCurrentGenerationSeed(){
     const currentDate = new Date();

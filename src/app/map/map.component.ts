@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MapLoaderService, Settings } from '../service/map-loader.service';
+import { StreetViewService } from '../service/street-view.service';
 
 @Component({
   selector: 'app-map',
@@ -8,17 +9,12 @@ import { MapLoaderService, Settings } from '../service/map-loader.service';
 })
 export class MapComponent {
   @ViewChild('map') gmapElement: HTMLElement | null = null;
-  streetViewSettings: Settings = {
-    lat: 37.86926,
-    lng: -122.254811,
-    zoom: 1,
-  }
 
-  constructor(private mapLoader: MapLoaderService) {
+  constructor(private streetView: StreetViewService) {
   }
 
   ngAfterViewInit(): void {
-    if(this.gmapElement != null)  console.log(this.mapLoader.initStreetView(this.gmapElement, this.streetViewSettings))
+    if(this.gmapElement != null) this.streetView.setStreetView(this.gmapElement);
   }
 
 

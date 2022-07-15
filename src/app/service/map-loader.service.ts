@@ -12,16 +12,17 @@ export interface Settings{
   providedIn: 'root'
 })
 export class MapLoaderService {
+  google: any;
+  private static promise: Promise<void>;
 
   constructor() { }
-
-  private static promise: Promise<void>;
 
   public load() {
     if (!MapLoaderService.promise) { // load once
       MapLoaderService.promise = new Promise((resolve) => {
         window['__onGapiLoaded'] = () => {
           console.log('google maps api loaded')
+          this.google = window.google;
           resolve();
           delete window['__onGapiLoaded'];
         }
@@ -33,27 +34,6 @@ export class MapLoaderService {
         document.getElementsByTagName('head')[0].appendChild(node);
       });
     }
-
     return MapLoaderService.promise;
-  }
-
-  public async initMap(mapElement: any, settings: Settings){
-    await this.load()
-    return new window.google.maps.Map(mapElement.nativeElement, {
-      center: new window.google.maps.LatLng(settings.lat, settings.lng),
-      zoom: settings.zoom,
-    })
-    
-  }
-
-  public async initStreetView(panorama: any, settings: Settings){
-    await this.load();
-
-    return new window.google.maps.StreetViewPanorama(panorama.nativeElement, {
-      position: new window.google.maps.LatLng(settings.lat, settings.lng),
-      zoom: settings.zoom,
-      pov: { heading: 0, pitch: 0 },
-      showRoadLabels: false,
-    })
   }
 }
