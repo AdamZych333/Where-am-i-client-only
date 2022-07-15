@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MapService } from '../map.service';
-import { RegionService } from '../region.service';
+import { MapService } from '../service/map.service';
+import { RegionService } from '../service/region.service';
 
 @Component({
   selector: 'app-settings',
