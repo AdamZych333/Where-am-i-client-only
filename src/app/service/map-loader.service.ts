@@ -53,6 +53,7 @@ export class MapLoaderService {
       position: new window.google.maps.LatLng(settings.lat, settings.lng),
       zoom: settings.zoom,
       pov: { heading: 0, pitch: 0 },
+      showRoadLabels: false,
     })
   }
 }

@@ -1,5 +1,21 @@
 .map
-    width: 95vw
+    width: 92vw
     height: 95vh
     border: 1px black solid
     margin: 30px 0
+
+    ::ng-deep 
+        > :nth-child(1)
+            > :nth-child(2)
+                > :nth-child(1)
+                    > :nth-child(9)
+                        > :nth-child(1)
+                            left: -100vw !important
+                        > :nth-child(2)
+                            > :nth-child(1)
+                                filter: invert(1)
+            > :nth-child(4)
+                display: none
+                
+        > :nth-child(2)
+            display: none
