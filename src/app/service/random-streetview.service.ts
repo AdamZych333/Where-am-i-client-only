@@ -77,13 +77,13 @@ export class RandomStreetviewService extends EventEmitter{
           onLocation(location);
           return location;
       };
-      let tasks = [];
+      let tasks: Promise<[number, number]>[] = [];
       for (let i = 0; i < nLocations; i++)
-          tasks.push(new Promise(resolve => get().then(resolve)));
+          tasks.push(new Promise<[number, number]>(resolve => get().then(resolve)));
       return await Promise.all(tasks);
   }
 
-  async getRandomLocation() {
+  async getRandomLocation(): Promise<[number, number]> {
       if (!this._streetView.google) {
           await this.mapLoader.load()
           this._streetView.google = this.mapLoader.google;
@@ -94,7 +94,7 @@ export class RandomStreetviewService extends EventEmitter{
           type: this.type
       });
       if (location === false)
-          return false;
+          return [37.86926, -122.254811];
       return [location.lat(), location.lng()];
   }
 }
