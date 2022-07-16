@@ -1,23 +1,7 @@
 import { Injectable } from '@angular/core';
-import { mulberry32 } from '../utils/randomNumberWithSeed';
 import { MapLoaderService } from './map-loader.service';
 import { RandomStreetviewService } from './random-streetview.service';
-import { StreetViewService } from './street-view.service';
-
-export class Map{
-  lat: number | null = null;
-  lng: number | null = null;
-  constructor(public value: string, public viewValue: string){}
-
-  setCoordinates(lat: number, lng: number){
-    this.lat = lat;
-    this.lng = lng;
-  }
-
-  hasSetCoordinates(){
-    return this.lat !== null && this.lng !== null;
-  }
-}
+import { Map } from '../utils/map';
 
 @Injectable({
   providedIn: 'root'
@@ -40,11 +24,12 @@ export class MapService {
   }
 
   async getCoordinates(){
-    // regionservice.selectedregion.border => generate maps with seed
-    if(!this.selectedMap.hasSetCoordinates()){
+    let seed = this.getCurrentGenerationSeed();
+    if(!this.selectedMap.hasSetCoordinates() || this.selectedMap.seed !== seed){
+      this.selectedMap.seed = seed;
       this.randomStreetView.setParameters({
         border: this.selectedRegion.border,
-        seed: this.getCurrentGenerationSeed(),
+        seed: seed,
         google: await this.mapLoader.load()
       })
       const location = await this.randomStreetView.getRandomLocation();
@@ -55,11 +40,12 @@ export class MapService {
 
   getCurrentGenerationSeed(): number{
     const currentDate = new Date();
-    return +`${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/10)}${this.selectedMap.value}`
+    return +`${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${this.generationTime-1-Math.floor(currentDate.getUTCMinutes()%this.generationTime)}${this.selectedMap.value}`
   }
 
   getTimeLeftToNextGeneraton(){
     const currentDate = new Date();
+    console.log(this.getCurrentGenerationSeed())
     return {minutes: this.generationTime-1 - Math.floor(currentDate.getUTCMinutes()%this.generationTime), seconds: 60 - currentDate.getUTCSeconds()};
   }
 }
