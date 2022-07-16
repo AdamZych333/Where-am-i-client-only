@@ -14,7 +14,7 @@ export class MapComponent {
   @ViewChild('panorama') gpanoramaElement: HTMLElement | null = null;
   @ViewChild('map') gmapElement: HTMLElement | null = null;
 
-  scoreBoardExpanded: boolean = true;
+  scoreBoardExpanded: boolean = false;
 
   constructor(public mapService: MapService,private scoreService: ScoreService, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
   }

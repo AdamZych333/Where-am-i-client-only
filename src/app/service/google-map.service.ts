@@ -37,30 +37,29 @@ export class GoogleMapService {
   }
 
   addMarkers(){
-    if(this.mapService.selectedMap.guess != null){
-      const from = new this.loadMaps.google.maps.Marker({
-        position: this.mapService.selectedMap.guess,
-        map: this.map,
-        label: {text: "?", color: 'white'}
-      })
-      const answerLatLng = {lat: this.mapService.selectedMap.lat, lng: this.mapService.selectedMap.lng}
-      const to = new this.loadMaps.google.maps.Marker({
-        position: answerLatLng,
-        map: this.map,
-        label: {text: "!", color: 'yellow'}
-      })
-      const polyline = new this.loadMaps.google.maps.Polyline({
-        strokeColor: "#ffcc66",
-          strokeOpacity: .5,
-          strokeWeight: 2,
-          map: this.map,
-          path: [from.getPosition(), to.getPosition()]
-      })
+    if(this.mapService.selectedMap.guess == null) return;
+    const from = new this.loadMaps.google.maps.Marker({
+      position: this.mapService.selectedMap.guess,
+      map: this.map,
+      label: {text: "?", color: 'white'}
+    })
+    const answerLatLng = {lat: this.mapService.selectedMap.lat, lng: this.mapService.selectedMap.lng}
+    const to = new this.loadMaps.google.maps.Marker({
+      position: answerLatLng,
+      map: this.map,
+      label: {text: "!", color: 'yellow'}
+    })
+    const polyline = new this.loadMaps.google.maps.Polyline({
+      strokeColor: "#ffcc66",
+      strokeOpacity: .5,
+      strokeWeight: 2,
+      map: this.map,
+      path: [from.getPosition(), to.getPosition()]
+    })
 
-      this.drawings.push(to)
-      this.drawings.push(from)
-      this.drawings.push(polyline)
-    }
+    this.drawings.push(to)
+    this.drawings.push(from)
+    this.drawings.push(polyline)
   }
 
   reset(){

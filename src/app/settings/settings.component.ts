@@ -27,7 +27,8 @@ export class SettingsComponent implements OnInit{
   }
 
   onSettingsChange(){
-    this.streetView.updateStreetView();
+    this.mapService.resetMaps();
     this.googleMaps.reset();
+    this.streetView.updateStreetView();
   }
 }

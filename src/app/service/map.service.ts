@@ -7,7 +7,7 @@ import { Map } from '../utils/map';
   providedIn: 'root'
 })
 export class MapService {
-  generationTime = 10;
+  generationTime = 1;
   numberOfMaps = 20;
   maps: Map[] = <Map[]>[];
   selectedMap: Map;
@@ -24,7 +24,7 @@ export class MapService {
   }
 
   async getCoordinates(){
-    let seed = this.getCurrentGenerationSeed();
+    let seed = this.getCurrentGenerationSeed(this.selectedMap);
     if(!this.selectedMap.hasSetCoordinates() || this.selectedMap.seed !== seed){
       this.selectedMap.seed = seed;
       this.randomStreetView.setParameters({
@@ -38,13 +38,22 @@ export class MapService {
     return {lat: this.selectedMap.lat, lng: this.selectedMap.lng};
   }
 
-  getCurrentGenerationSeed(): number{
+  getCurrentGenerationSeed(map: Map): number{
     const currentDate = new Date();
-    return +`${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/this.generationTime)}${this.selectedMap.value}`
+    return +`${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/this.generationTime)}${map.value}`
   }
 
   getTimeLeftToNextGeneraton(){
     const currentDate = new Date();
     return {minutes: this.generationTime-1 - Math.floor(currentDate.getUTCMinutes()%this.generationTime), seconds: 60 - currentDate.getUTCSeconds()};
+  }
+
+  resetMaps(){
+    this.maps.forEach(e => {
+      if(e.seed != this.getCurrentGenerationSeed(e)) {
+        e.score = null;
+        e.guess = null;
+      }
+    });
   }
 }
