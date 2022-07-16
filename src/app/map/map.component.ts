@@ -9,6 +9,7 @@ import { StreetViewService } from '../service/street-view.service';
 })
 export class MapComponent {
   @ViewChild('map') gmapElement: HTMLElement | null = null;
+  @ViewChild('resetBtn') resetBtn: HTMLElement | null = null;
 
   constructor(private streetView: StreetViewService) {
   }
@@ -17,5 +18,7 @@ export class MapComponent {
     if(this.gmapElement != null) this.streetView.setStreetView(this.gmapElement);
   }
 
-
+  onResetClick(){
+    this.streetView.resetPosition()
+  }
 }

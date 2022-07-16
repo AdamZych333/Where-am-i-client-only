@@ -6,6 +6,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +30,7 @@ import { MapComponent } from './map/map.component';
     MatButtonModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

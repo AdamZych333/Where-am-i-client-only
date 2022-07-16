@@ -25,6 +25,7 @@ export class MapService {
 
   async getCoordinates(){
     let seed = this.getCurrentGenerationSeed();
+    console.log(seed)
     if(!this.selectedMap.hasSetCoordinates() || this.selectedMap.seed !== seed){
       this.selectedMap.seed = seed;
       this.randomStreetView.setParameters({
@@ -40,7 +41,7 @@ export class MapService {
 
   getCurrentGenerationSeed(): number{
     const currentDate = new Date();
-    return +`${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${this.generationTime-1-Math.floor(currentDate.getUTCMinutes()%this.generationTime)}${this.selectedMap.value}`
+    return +`${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/this.generationTime)}${this.selectedMap.value}`
   }
 
   getTimeLeftToNextGeneraton(){

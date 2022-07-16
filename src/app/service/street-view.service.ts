@@ -22,8 +22,12 @@ export class StreetViewService {
   }
 
   async updateStreetView(){
-    await this.loadMaps.load();
     const latLng = await this.mapService.getCoordinates();
+    this.panorama.setPosition(latLng);
+  }
+
+  resetPosition(){
+    const latLng = {lat: this.mapService.selectedMap.lat, lng: this.mapService.selectedMap.lng};
     this.panorama.setPosition(latLng);
   }
 }

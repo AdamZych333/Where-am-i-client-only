@@ -1,8 +1,11 @@
+$map-width: 92vw
+$map-height: 95vh
 .map
-    width: 92vw
-    height: 95vh
+    width: $map-width
+    height: $map-height
     border: 1px black solid
     margin: 30px 0
+    z-index: 1
 
     ::ng-deep 
         > :nth-child(1)
@@ -19,3 +22,21 @@
                 
         > :nth-child(2)
             display: none
+
+.reset-btn
+    $btn-width: 40px
+    $btn-height: 40px
+    width: $btn-width
+    height: $btn-height
+    min-width: 0
+    position: relative
+    background-color: black
+    color: hsla(0, 0, 80, 1)
+    top: calc($map-height - $btn-height - 145px)
+    left: calc($map-width - $btn-width - 13px)
+    z-index: 2
+    text-align: center
+    padding: 0 0 0 1px
+
+    .mat-icon
+        font-size: 20px

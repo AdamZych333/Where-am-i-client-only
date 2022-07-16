@@ -2,17 +2,20 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { mulberry32 } from '../utils/randomNumberWithSeed';
 import { MapLoaderService } from './map-loader.service';
 
+/*
+    NPM package https://www.npmjs.com/package/random-streetview
+    I rewrote it in typescript and made it seedable
+*/
 @Injectable({
   providedIn: 'root'
 })
-export class RandomStreetviewService extends EventEmitter{
+export class RandomStreetviewService{
   _streetView: StreetView;
   endZoom: number;
   type: string;
   distribution: string;
 
   constructor(private mapLoader: MapLoaderService) {
-    super();
     this._streetView = new StreetView();
     this.endZoom = 14;
     this.type = 'sv';
@@ -103,7 +106,7 @@ export class RandomStreetviewService extends EventEmitter{
   }
 }
 
-class StreetView extends EventEmitter {
+class StreetView {
   slowCpu: boolean;
   coverageCache: any;
   canvas: any;
@@ -123,7 +126,6 @@ class StreetView extends EventEmitter {
 ];
 
   constructor() {
-    super();
     this.slowCpu = false;
     this.coverageCache = this.importCoverageCache();
 
