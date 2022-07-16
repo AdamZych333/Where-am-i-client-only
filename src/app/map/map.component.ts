@@ -1,6 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { GoogleMapService } from '../service/google-map.service';
 import { MapLoaderService, Settings } from '../service/map-loader.service';
+import { MapService } from '../service/map.service';
+import { ScoreService } from '../service/score.service';
 import { StreetViewService } from '../service/street-view.service';
 
 @Component({
@@ -14,7 +16,7 @@ export class MapComponent {
 
   scoreBoardExpanded: boolean = true;
 
-  constructor(private googleMaps: GoogleMapService, private streetView: StreetViewService) {
+  constructor(public mapService: MapService,private scoreService: ScoreService, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
   }
 
   ngAfterViewInit(): void {
@@ -28,5 +30,13 @@ export class MapComponent {
 
   onScoreBoardClick(){
     this.scoreBoardExpanded = !this.scoreBoardExpanded;
+  }
+
+  onSubmitClick(){
+    const marker = this.googleMaps.marker;
+    if(marker == undefined || this.mapService.selectedMap.score != null) return;
+    const guess = {lat: marker.position.lat(), lng: marker.position.lng()};
+    this.mapService.selectedMap.guess = guess;
+    this.scoreService.setScore(guess);
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GoogleMapService } from '../service/google-map.service';
 import { MapService } from '../service/map.service';
 import { StreetViewService } from '../service/street-view.service';
 
@@ -10,7 +11,7 @@ import { StreetViewService } from '../service/street-view.service';
 export class SettingsComponent implements OnInit{
   timeLeft: {minutes: number, seconds: number};
 
-  constructor(private streetView: StreetViewService, public mapService: MapService) {
+  constructor(private googleMaps: GoogleMapService,private streetView: StreetViewService, public mapService: MapService) {
     this.timeLeft = mapService.getTimeLeftToNextGeneraton();
   }
 
@@ -27,5 +28,6 @@ export class SettingsComponent implements OnInit{
 
   onSettingsChange(){
     this.streetView.updateStreetView();
+    this.googleMaps.reset();
   }
 }

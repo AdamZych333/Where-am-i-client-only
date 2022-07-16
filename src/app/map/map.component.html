@@ -4,11 +4,13 @@
         class="score-board {{scoreBoardExpanded? 'expanded': ''}}"
         (click)="onScoreBoardClick()">
     <p>Time left: {{0}}</p>
+    <p>Score: {{mapService.selectedMap.score == null? 0: mapService.selectedMap.score}}</p>
 </button>
 <div [style.display]="scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
     <div #map class="map"></div>
     <button class="submit-btn" 
             color="accent" 
+            (click)="onSubmitClick()"
             matTooltip="Click to submit score."
             mat-raised-button>Submit</button>
 </div>
