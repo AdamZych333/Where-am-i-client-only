@@ -48,8 +48,8 @@ export class RandomStreetviewService extends EventEmitter{
       if (!google) {
           await this.mapLoader.load();
       }
-      let polygon;
-      if (border instanceof Array) {
+      let polygon = [];
+      if (border instanceof Array && border.length !== 0) {
           let paths = border.map((path: any) => path.map(([lat, lng]:[any, any]) => new this.mapLoader.google.maps.LatLng(lat, lng)));
           polygon = new this.mapLoader.google.maps.Polygon({
               paths: paths,
@@ -62,7 +62,7 @@ export class RandomStreetviewService extends EventEmitter{
               clickable: false,
           });
       }
-      if (!cacheKey && enableCaching && polygon) {
+      if (!cacheKey && enableCaching && polygon.length !== 0) {
           console.log(polygon)
           cacheKey = '';
           polygon.getPaths().forEach((p: any) => p.forEach((c: any) => cacheKey += c.lat().toString() + c.lng()));
@@ -148,7 +148,7 @@ class StreetView extends EventEmitter {
       this.smallestContainingTile = this.polygonToSmallestContainingTile(polygon);
       this.polygon = polygon;
       let area = 0;
-      if (polygon)
+      if (polygon.length !== 0)
           polygon.getPaths().forEach((path: any) => {
               area += this.google.maps.geometry.spherical.computeArea(path);
           });
@@ -333,18 +333,19 @@ class StreetView extends EventEmitter {
       return new this.google.maps.LatLng(lat, lng);
   }
 
-  toRadians(degrees: any) {
-      return degrees * Math.PI / 180;
-  }
+    toRadians(degrees: any) {
+        return degrees * Math.PI / 180;
+    }
 
     polygonToBounds(polygon: any) {
         
         const bounds = new this.google.maps.LatLngBounds();
-        polygon.getPaths().forEach((path: any) => {
-            path.forEach((pos: any) => {
-                bounds.extend(pos);
+        if(polygon.length !== 0)
+            polygon.getPaths().forEach((path: any) => {
+                path.forEach((pos: any) => {
+                    bounds.extend(pos);
+                });
             });
-        });
         return bounds;
     }
 

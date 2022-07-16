@@ -12,7 +12,7 @@ export class MapService {
   maps: Map[] = <Map[]>[];
   selectedMap: Map;
   regions = [
-    {value: 'world', viewValue: 'The World', border: [[[36.050655, 35.047808], [33.588766, 34.364699], [35.235311, 30.703665]]]},
+    {value: 'world', viewValue: 'The World', border: []},
   ]
   selectedRegion = this.regions[0];
 
@@ -45,7 +45,6 @@ export class MapService {
 
   getTimeLeftToNextGeneraton(){
     const currentDate = new Date();
-    console.log(this.getCurrentGenerationSeed())
     return {minutes: this.generationTime-1 - Math.floor(currentDate.getUTCMinutes()%this.generationTime), seconds: 60 - currentDate.getUTCSeconds()};
   }
 }
