@@ -22,7 +22,6 @@ export class StreetViewService {
   }
 
   async updateStreetView(){
-    // mapservice.selectedmap => panorama
     await this.loadMaps.load();
     const latLng = await this.mapService.getCoordinates();
     this.panorama.setPosition(latLng);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+import { mulberry32 } from '../utils/randomNumberWithSeed';
 import { MapLoaderService } from './map-loader.service';
 import { RandomStreetviewService } from './random-streetview.service';
-import { RegionService } from './region.service';
 import { StreetViewService } from './street-view.service';
 
 export class Map{
@@ -23,12 +23,16 @@ export class Map{
   providedIn: 'root'
 })
 export class MapService {
-  maps: Map[] = <Map[]>[];
   generationTime = 10;
   numberOfMaps = 20;
+  maps: Map[] = <Map[]>[];
   selectedMap: Map;
+  regions = [
+    {value: 'world', viewValue: 'The World', border: [[[36.050655, 35.047808], [33.588766, 34.364699], [35.235311, 30.703665]]]},
+  ]
+  selectedRegion = this.regions[0];
 
-  constructor(private regionService: RegionService, private randomStreetView: RandomStreetviewService) {
+  constructor(private mapLoader: MapLoaderService, private randomStreetView: RandomStreetviewService) {
     for(let i = 0; i < this.numberOfMaps; i++){
       this.maps.push(new Map((i+1).toString(), (i+1).toString()));
     }
@@ -38,15 +42,20 @@ export class MapService {
   async getCoordinates(){
     // regionservice.selectedregion.border => generate maps with seed
     if(!this.selectedMap.hasSetCoordinates()){
+      this.randomStreetView.setParameters({
+        border: this.selectedRegion.border,
+        seed: this.getCurrentGenerationSeed(),
+        google: await this.mapLoader.load()
+      })
       const location = await this.randomStreetView.getRandomLocation();
       this.selectedMap.setCoordinates(location[0], location[1]);
     }
     return {lat: this.selectedMap.lat, lng: this.selectedMap.lng};
   }
 
-  getCurrentGenerationSeed(){
+  getCurrentGenerationSeed(): number{
     const currentDate = new Date();
-    return `${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/10)}${this.selectedMap.value}`
+    return +`${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/10)}${this.selectedMap.value}`
   }
 
   getTimeLeftToNextGeneraton(){

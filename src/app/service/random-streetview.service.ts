@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { mulberry32 } from '../utils/randomNumberWithSeed';
 import { MapLoaderService } from './map-loader.service';
 
 @Injectable({
@@ -27,7 +28,8 @@ export class RandomStreetviewService extends EventEmitter{
   }
 
   async setParameters({
-                          polygon = <any>[],
+                          border = <any>[],
+                          seed = 0,
                           enableCaching = true,
                           endZoom = 14,
                           cacheKey = '',
@@ -46,9 +48,10 @@ export class RandomStreetviewService extends EventEmitter{
       if (!google) {
           await this.mapLoader.load();
       }
-      if (polygon instanceof Array) {
-          let paths = polygon.map((path: any) => path.map(([lat, lng]:[any, any]) => this.mapLoader.google.maps.LatLng(lat, lng)));
-          polygon = this.mapLoader.google.maps.Polygon({
+      let polygon;
+      if (border instanceof Array) {
+          let paths = border.map((path: any) => path.map(([lat, lng]:[any, any]) => new this.mapLoader.google.maps.LatLng(lat, lng)));
+          polygon = new this.mapLoader.google.maps.Polygon({
               paths: paths,
               strokeColor: "#00ff7a",
               strokeOpacity: 0.8,
@@ -65,7 +68,8 @@ export class RandomStreetviewService extends EventEmitter{
           polygon.getPaths().forEach((p: any) => p.forEach((c: any) => cacheKey += c.lat().toString() + c.lng()));
       }
 
-      this._streetView.setParameters(polygon, enableCaching, cacheKey, google);
+      if(!google) google = await this.mapLoader.load();
+      this._streetView.setParameters(polygon, seed, enableCaching, cacheKey, google);
       this.endZoom = endZoom;
       this.type = type;
       this.distribution = distribution;
@@ -110,6 +114,7 @@ class StreetView extends EventEmitter {
   google: any;
   area: number;
   distribution: string;
+  seed: number;
   smallestContainingTile = {x: 0, y: 0, zoom: 0};
   typeColors = [
     {color: [84, 160, 185], id: 'sv'},
@@ -133,9 +138,10 @@ class StreetView extends EventEmitter {
     this.google = false;
     this.area = 1;
     this.distribution = '';
+    this.seed = 0;
   }
 
-  setParameters(polygon: any, enableCaching: boolean, cacheKey: string, google: any) {
+  setParameters(polygon: any, seed: number, enableCaching: boolean, cacheKey: string, google: any) {
       this.google = google;
       this.cacheKey = cacheKey;
       this.enableCaching = enableCaching;
@@ -147,6 +153,7 @@ class StreetView extends EventEmitter {
               area += this.google.maps.geometry.spherical.computeArea(path);
           });
       this.area = area;
+      this.seed = seed;
   }
 
   async randomValidLocation({
@@ -185,7 +192,13 @@ class StreetView extends EventEmitter {
           console.error("No blue pixel found");
           return this.randomValidLocation({endZoom, type, distribution});
       }
-      let randomSvPixel = Math.floor(Math.random() * pixelCounts.count);
+      let randomSvPixel: number;
+      if(this.seed == 0){
+        randomSvPixel = Math.floor(Math.random() * pixelCounts.count);
+      }else{
+        randomSvPixel = Math.floor(mulberry32(this.seed)() * pixelCounts.count);
+      }
+       
       let randomSvIndex = pixelCounts.indices[randomSvPixel];
       let x = (randomSvIndex / 4) % img.width;
       let y = Math.floor((randomSvIndex / 4) / img.width);
@@ -324,15 +337,16 @@ class StreetView extends EventEmitter {
       return degrees * Math.PI / 180;
   }
 
-  polygonToBounds(polygon: any) {
-      const bounds = new this.google.maps.LatLngBounds();
-      polygon.getPaths().forEach((path: any) => {
-          path.forEach((pos: any) => {
-              bounds.extend(pos);
-          });
-      });
-      return bounds;
-  }
+    polygonToBounds(polygon: any) {
+        
+        const bounds = new this.google.maps.LatLngBounds();
+        polygon.getPaths().forEach((path: any) => {
+            path.forEach((pos: any) => {
+                bounds.extend(pos);
+            });
+        });
+        return bounds;
+    }
 
   polygonToSmallestContainingTile(polygon: any) {
       if (polygon === false)
@@ -538,33 +552,43 @@ class StreetView extends EventEmitter {
       let len = array.length;
       let totalWeights = array.map(weightField).reduce((a:any, b:any) => a + b);
       for (let i = 0; i < len; i++) {
-          let randomWeightValue = Math.random() * totalWeights;
-          let weightedRandomIndex = -1;
-          for (let j = 0; j < array.length; j++) {
-              let item = array[j];
-              if (weightField(item) > randomWeightValue) {
-                  weightedRandomIndex = j;
-                  break;
-              }
-              randomWeightValue -= weightField(item);
-          }
-          let item = array.splice(weightedRandomIndex, 1)[0];
-          totalWeights -= weightField(item);
-          result.push(item);
-      }
-      return result;
-
+        let randomWeightValue
+        if(this.seed == 0){
+            randomWeightValue = Math.random() * totalWeights;
+        }
+        else{
+            randomWeightValue = mulberry32(this.seed)() * totalWeights;
+        }
+        
+        let weightedRandomIndex = -1;
+        for (let j = 0; j < array.length; j++) {
+            let item = array[j];
+            if (weightField(item) > randomWeightValue) {
+                weightedRandomIndex = j;
+                break;
+            }
+            randomWeightValue -= weightField(item);
+        }
+        let item = array.splice(weightedRandomIndex, 1)[0];
+        totalWeights -= weightField(item);
+        result.push(item);
+    }
+    return result;
   }
 
-  shuffle(input:any) {
-      for (let i = input.length - 1; i >= 0; i--) {
+    shuffle(input:any) {
+        for (let i = input.length - 1; i >= 0; i--) {
+            let randomIndex;
+            if(this.seed === 0){
+                randomIndex = Math.floor(Math.random() * (i + 1));
+            }else{
+                randomIndex = Math.floor(mulberry32(this.seed)() * (i + 1));
+            }
+            const itemAtIndex = input[randomIndex];
 
-          const randomIndex = Math.floor(Math.random() * (i + 1));
-          const itemAtIndex = input[randomIndex];
-
-          input[randomIndex] = input[i];
-          input[i] = itemAtIndex;
-      }
-      return input;
-  }
+            input[randomIndex] = input[i];
+            input[i] = itemAtIndex;
+        }
+        return input;
+    }
 }
