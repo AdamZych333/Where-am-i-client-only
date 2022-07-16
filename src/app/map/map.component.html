@@ -1,20 +1,20 @@
 <button mat-flat-button
+        color="primary"
         matTooltip="Click to open/close map."
         class="score-board {{scoreBoardExpanded? 'expanded': ''}}"
         (click)="onScoreBoardClick()">
     <p>Time left: {{0}}</p>
 </button>
-<div *ngIf="scoreBoardExpanded" class="expanded-score-board">
-    <div #map></div>
+<div [style.display]="scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
+    <div #map class="map"></div>
     <button class="submit-btn" 
-            color="primary" 
+            color="accent" 
             matTooltip="Click to submit score."
             mat-raised-button>Submit</button>
 </div>
 <div #panorama class="panorama"></div>
 <button mat-stroked-button 
         matTooltip="Reset to starting position."
-        #resetBtn 
         class="reset-btn" 
         (click)="onResetClick()">
     <mat-icon>home</mat-icon>

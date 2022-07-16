@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { GoogleMapService } from '../service/google-map.service';
 import { MapLoaderService, Settings } from '../service/map-loader.service';
 import { StreetViewService } from '../service/street-view.service';
 
@@ -9,14 +10,16 @@ import { StreetViewService } from '../service/street-view.service';
 })
 export class MapComponent {
   @ViewChild('panorama') gpanoramaElement: HTMLElement | null = null;
-  @ViewChild('resetBtn') resetBtn: HTMLElement | null = null;
+  @ViewChild('map') gmapElement: HTMLElement | null = null;
+
   scoreBoardExpanded: boolean = true;
 
-  constructor(private streetView: StreetViewService) {
+  constructor(private googleMaps: GoogleMapService, private streetView: StreetViewService) {
   }
 
   ngAfterViewInit(): void {
     if(this.gpanoramaElement != null) this.streetView.setStreetView(this.gpanoramaElement);
+    if(this.gpanoramaElement != null) this.googleMaps.setMap(this.gmapElement);
   }
 
   onResetClick(){
