@@ -33,10 +33,11 @@ export class MapComponent {
   }
 
   onSubmitClick(){
-    const marker = this.googleMaps.marker;
+    const marker = this.googleMaps.guess;
     if(marker == undefined || this.mapService.selectedMap.score != null) return;
     const guess = {lat: marker.position.lat(), lng: marker.position.lng()};
     this.mapService.selectedMap.guess = guess;
     this.scoreService.setScore(guess);
+    this.googleMaps.addMarkers();
   }
 }

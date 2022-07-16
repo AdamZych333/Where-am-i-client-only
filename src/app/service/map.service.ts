@@ -25,7 +25,6 @@ export class MapService {
 
   async getCoordinates(){
     let seed = this.getCurrentGenerationSeed();
-    console.log(seed)
     if(!this.selectedMap.hasSetCoordinates() || this.selectedMap.seed !== seed){
       this.selectedMap.seed = seed;
       this.randomStreetView.setParameters({
