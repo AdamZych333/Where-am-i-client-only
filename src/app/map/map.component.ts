@@ -8,17 +8,22 @@ import { StreetViewService } from '../service/street-view.service';
   styleUrls: ['./map.component.sass']
 })
 export class MapComponent {
-  @ViewChild('map') gmapElement: HTMLElement | null = null;
+  @ViewChild('panorama') gpanoramaElement: HTMLElement | null = null;
   @ViewChild('resetBtn') resetBtn: HTMLElement | null = null;
+  scoreBoardExpanded: boolean = true;
 
   constructor(private streetView: StreetViewService) {
   }
 
   ngAfterViewInit(): void {
-    if(this.gmapElement != null) this.streetView.setStreetView(this.gmapElement);
+    if(this.gpanoramaElement != null) this.streetView.setStreetView(this.gpanoramaElement);
   }
 
   onResetClick(){
     this.streetView.resetPosition()
+  }
+
+  onScoreBoardClick(){
+    this.scoreBoardExpanded = !this.scoreBoardExpanded;
   }
 }

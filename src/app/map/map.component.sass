@@ -1,10 +1,10 @@
-$map-width: 92vw
-$map-height: 95vh
-.map
-    width: $map-width
-    height: $map-height
+$panorama-width: 92vw
+$panorama-height: 95vh
+
+.panorama
+    width: $panorama-width
+    height: $panorama-height
     border: 1px black solid
-    margin: 30px 0
     z-index: 1
 
     ::ng-deep 
@@ -32,11 +32,47 @@ $map-height: 95vh
     position: relative
     background-color: black
     color: hsla(0, 0, 80, 1)
-    top: calc($map-height - $btn-height - 145px)
-    left: calc($map-width - $btn-width - 13px)
+    top: -30vh
+    left: calc($panorama-width - $btn-width - 13px)
     z-index: 2
     text-align: center
     padding: 0 0 0 1px
 
     .mat-icon
         font-size: 20px
+
+.score-board
+    min-width: 0
+    height: 50px
+    padding: 0 30px
+    margin-left: 5px
+    position: absolute
+    top: 346px
+    z-index: 3
+
+    ::ng-deep .mat-button-wrapper
+        display: flex
+        flex-direction: row
+        justify-content: space-around
+        align-items: center
+
+        > p
+            margin: 0
+.expanded
+    width: calc($panorama-width/2)
+
+.expanded-score-board
+    position: absolute
+    top: 390px
+    z-index: 3
+    width: calc($panorama-width/2)
+    background-color: white
+    margin: 0 5px
+    border-radius: 0 0 3px 3px
+    display: flex
+    flex-direction: column
+    align-items: center
+
+    .submit-btn
+        width: 100px
+        margin: 5px 0
