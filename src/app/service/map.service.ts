@@ -8,6 +8,7 @@ import { SettingsService } from './settings.service';
   providedIn: 'root'
 })
 export class MapService {
+  scoreBoardExpanded: boolean = false;
   
   constructor(private settings: SettingsService, private mapLoader: MapLoaderService, private randomStreetView: RandomStreetviewService) {}
 
@@ -35,10 +36,14 @@ export class MapService {
     });
   }
 
-  setScore(marker: {lat: number, lng: number}, map: Map){
+  setScore(guess: {lat: number, lng: number} | null, map: Map){
+    if(guess == null){
+      this.settings.selectedMap.score = 0;
+      return;
+    }
     const answerLatLng = {lat: map.lat, lng: map.lng}
     if(answerLatLng.lat == null || answerLatLng.lng == null) return;
-    this.settings.selectedMap.score = this.calculateScore(marker.lat, marker.lng, answerLatLng.lat, answerLatLng.lng);
+    this.settings.selectedMap.score = this.calculateScore(guess.lat, guess.lng, answerLatLng.lat, answerLatLng.lng);
   }
 
   private calculateScore(guessLat:number, guessLng:number, answerLat:number, answerLng:number){

@@ -11,20 +11,19 @@ import { StreetViewService } from '../service/street-view.service';
   styleUrls: ['./map.component.sass']
 })
 export class MapComponent {
-  scoreBoardExpanded: boolean = false;
 
   @HostBinding("attr.style")
   public get panoramaWidth(): any {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(private mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
+  constructor(public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
   }
 
   getStreetViewStyle(){
     return {
       'width': '92vw', 
-      'height': '95vh',
+      'height': this.settings.started?'95vh':'0px',
     }
   }
 
@@ -41,7 +40,7 @@ export class MapComponent {
   }
 
   onScoreBoardClick(){
-    this.scoreBoardExpanded = !this.scoreBoardExpanded;
+    this.mapsService.scoreBoardExpanded = !this.mapsService.scoreBoardExpanded;
   }
 
   onSubmitClick(){
