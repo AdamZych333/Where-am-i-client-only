@@ -2,12 +2,6 @@ import { Injectable } from '@angular/core';
 
 declare const window: any;
 
-export interface Settings{
-  lat: number,
-  lng: number,
-  zoom: number,
-}
-
 @Injectable({
   providedIn: 'root'
 })

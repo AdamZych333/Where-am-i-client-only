@@ -1,21 +1,21 @@
 <div class="menu">
-    <h1>Every {{mapService.generationTime}} minutes generated are {{mapService.maps.length}} maps for selected region.</h1>
+    <h1>Every {{settings.generationTime}} minutes generated are {{settings.maps.length}} maps for selected region.</h1>
     <h2>Time left till next reset: 
         <h3>{{timeLeft.minutes}} minutes {{timeLeft.seconds}} seconds</h3>
     </h2>
     <div class="selectors">
         <mat-form-field appearance="outline" color="primary">
             <mat-label>Region</mat-label>
-            <mat-select (selectionChange)="onSettingsChange()" [(ngModel)]="mapService.selectedRegion">
-              <mat-option *ngFor="let region of mapService.regions" [value]="region">
+            <mat-select (selectionChange)="onSettingsChange()" [(ngModel)]="settings.selectedRegion">
+              <mat-option *ngFor="let region of settings.regions" [value]="region">
                 {{region.viewValue}}
               </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field appearance="outline" color="primary">
             <mat-label>Map</mat-label>
-            <mat-select (selectionChange)="onSettingsChange()" [(ngModel)]="mapService.selectedMap">
-              <mat-option *ngFor="let map of mapService.maps" [value]="map">
+            <mat-select (selectionChange)="onSettingsChange()" [(ngModel)]="settings.selectedMap">
+              <mat-option *ngFor="let map of settings.maps" [value]="map">
                 {{map.viewValue}}
               </mat-option>
             </mat-select>

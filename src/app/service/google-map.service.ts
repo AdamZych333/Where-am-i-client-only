@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MapLoaderService } from './map-loader.service';
 import { MapService } from './map.service';
+import { SettingsService } from './settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class GoogleMapService {
   guess: any;
   drawings: any[] = [];
 
-  constructor(private mapService: MapService, private loadMaps: MapLoaderService) { }
+  constructor(private settings: SettingsService, private mapService: MapService, private loadMaps: MapLoaderService) { }
 
   async setMap(mapElement: any){
     await this.loadMaps.load();
@@ -22,7 +23,7 @@ export class GoogleMapService {
     })
 
     this.map.addListener("click", (e:any) => {
-      if(this.mapService.selectedMap.score != null) return;
+      if(this.settings.selectedMap.score != null) return;
       if(this.guess != undefined) {
         this.guess.setMap(null);
         this.guess = null;
@@ -37,13 +38,13 @@ export class GoogleMapService {
   }
 
   addMarkers(){
-    if(this.mapService.selectedMap.guess == null) return;
+    if(this.settings.selectedMap.guess == null) return;
     const from = new this.loadMaps.google.maps.Marker({
-      position: this.mapService.selectedMap.guess,
+      position: this.settings.selectedMap.guess,
       map: this.map,
       label: {text: "?", color: 'white'}
     })
-    const answerLatLng = {lat: this.mapService.selectedMap.lat, lng: this.mapService.selectedMap.lng}
+    const answerLatLng = {lat: this.settings.selectedMap.lat, lng: this.settings.selectedMap.lng}
     const to = new this.loadMaps.google.maps.Marker({
       position: answerLatLng,
       map: this.map,

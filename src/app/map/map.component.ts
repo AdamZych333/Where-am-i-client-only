@@ -1,8 +1,8 @@
-import { Component, HostBinding, ViewChild } from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GoogleMapService } from '../service/google-map.service';
 import { MapService } from '../service/map.service';
-import { ScoreService } from '../service/score.service';
+import { SettingsService } from '../service/settings.service';
 import { StreetViewService } from '../service/street-view.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class MapComponent {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(private sanitizer: DomSanitizer ,public mapService: MapService,private scoreService: ScoreService, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
+  constructor(private mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
   }
 
   getStreetViewStyle(){
@@ -48,10 +48,10 @@ export class MapComponent {
 
   onSubmitClick(){
     const marker = this.googleMaps.guess;
-    if(marker == undefined || this.mapService.selectedMap.score != null) return;
+    if(marker == undefined || this.settings.selectedMap.score != null) return;
     const guess = {lat: marker.position.lat(), lng: marker.position.lng()};
-    this.mapService.selectedMap.guess = guess;
-    this.scoreService.setScore(guess);
+    this.settings.selectedMap.guess = guess;
+    this.mapsService.setScore(guess, this.settings.selectedMap);
     this.googleMaps.addMarkers();
   }
 }
