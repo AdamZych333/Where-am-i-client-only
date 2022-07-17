@@ -1,27 +1,4 @@
-$panorama-width: 92vw
-$panorama-height: 95vh
-
-.panorama
-    width: $panorama-width
-    height: $panorama-height
-    border: 1px black solid
-    z-index: 1
-
-    ::ng-deep 
-        > :nth-child(1)
-            > :nth-child(2)
-                > :nth-child(1)
-                    > :nth-child(9)
-                        > :nth-child(1)
-                            left: -100vw !important
-                        > :nth-child(2)
-                            > :nth-child(1)
-                                filter: invert(1)
-            > :nth-child(4)
-                display: none
-                
-        > :nth-child(2)
-            display: none
+$panorama-width: var(--panorama-width)
 
 .reset-btn
     $btn-width: 40px
@@ -71,15 +48,6 @@ $panorama-height: 95vh
     display: flex
     flex-direction: column
     align-items: center
-
-    .map
-        margin: 15px 0 0 0
-        background-color: black 
-        width: calc($panorama-width/2 - 30px)
-        height: 400px
-
-        ::ng-deep > :nth-child(2)
-            display: none
 
     .submit-btn
         width: 100px

@@ -1,6 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, HostBinding, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { GoogleMapService } from '../service/google-map.service';
-import { MapLoaderService, Settings } from '../service/map-loader.service';
 import { MapService } from '../service/map.service';
 import { ScoreService } from '../service/score.service';
 import { StreetViewService } from '../service/street-view.service';
@@ -11,17 +11,31 @@ import { StreetViewService } from '../service/street-view.service';
   styleUrls: ['./map.component.sass']
 })
 export class MapComponent {
-  @ViewChild('panorama') gpanoramaElement: HTMLElement | null = null;
-  @ViewChild('map') gmapElement: HTMLElement | null = null;
+  //@ViewChild('panorama') gpanoramaElement: HTMLElement | null = null;
+  //@ViewChild('map') gmapElement: HTMLElement | null = null;
 
   scoreBoardExpanded: boolean = false;
 
-  constructor(public mapService: MapService,private scoreService: ScoreService, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
+  @HostBinding("attr.style")
+  public get panoramaWidth(): any {
+    return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  ngAfterViewInit(): void {
-    if(this.gpanoramaElement != null) this.streetView.setStreetView(this.gpanoramaElement);
-    if(this.gpanoramaElement != null) this.googleMaps.setMap(this.gmapElement);
+  constructor(private sanitizer: DomSanitizer ,public mapService: MapService,private scoreService: ScoreService, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
+  }
+
+  getStreetViewStyle(){
+    return {
+      'width': '92vw', 
+      'height': '95vh',
+    }
+  }
+
+  getMapStyle(){
+    return {
+      'width': 'calc(46vw - 30px)',
+      'height': '400px'
+    }
   }
 
   onResetClick(){

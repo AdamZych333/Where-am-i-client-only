@@ -7,14 +7,16 @@
     <p>Score: {{mapService.selectedMap.score == null? 0: mapService.selectedMap.score}}</p>
 </button>
 <div [style.display]="scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
-    <div #map class="map"></div>
+    <app-google-maps [style]="getMapStyle()"></app-google-maps>
     <button class="submit-btn" 
             color="accent" 
             (click)="onSubmitClick()"
             matTooltip="Click to submit guess."
-            mat-raised-button>Submit</button>
+            mat-raised-button
+            >Submit
+    </button>
 </div>
-<div #panorama class="panorama"></div>
+<app-street-view [style]="getStreetViewStyle()"></app-street-view>
 <button mat-stroked-button 
         matTooltip="Reset to starting position."
         class="reset-btn" 

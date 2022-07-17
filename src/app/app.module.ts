@@ -13,12 +13,16 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SettingsComponent } from './settings/settings.component';
 import { MapComponent } from './map/map.component';
+import { GoogleMapsComponent } from './google-maps/google-maps.component';
+import { StreetViewComponent } from './street-view/street-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SettingsComponent,
-    MapComponent
+    MapComponent,
+    GoogleMapsComponent,
+    StreetViewComponent
   ],
   imports: [
     BrowserModule,

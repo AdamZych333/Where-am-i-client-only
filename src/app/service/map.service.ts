@@ -7,7 +7,7 @@ import { Map } from '../utils/map';
   providedIn: 'root'
 })
 export class MapService {
-  generationTime = 1;
+  generationTime = 10;
   numberOfMaps = 20;
   maps: Map[] = <Map[]>[];
   selectedMap: Map;
