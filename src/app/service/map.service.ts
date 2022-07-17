@@ -47,7 +47,7 @@ export class MapService {
   }
 
   private calculateScore(guessLat:number, guessLng:number, answerLat:number, answerLng:number){
-    const R = 6371;
+    const R = 6371e3; // meters
     const fi1 = guessLat * Math.PI/180;
     const fi2 = answerLat * Math.PI/180;
     const deltaFi = (answerLat-guessLat) * Math.PI/180;
@@ -57,8 +57,14 @@ export class MapService {
         Math.cos(fi1) * Math.cos(fi2) *
         Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const distance = R * c // meters
 
-    const score = 10000 - Math.round(R * c);
-    return Math.max(score, 0);
+    // distance capped at 5000km
+    const baseScore = Math.max(5000 - Math.round(distance/1000), 0); //kilemeters
+    // 1000x when closer than 4km
+    const bonus1 = Math.max(4000-Math.round(distance), 0);
+    // 10000x when closer than 100m
+    const bonus2 = Math.max(1000-Math.round(distance*10), 0);
+    return baseScore + bonus1 + bonus2;
   }
 }
