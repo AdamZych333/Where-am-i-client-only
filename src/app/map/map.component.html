@@ -1,26 +1,28 @@
-<button mat-flat-button
+<div [style.visibility]="displayComponent()" class="game">
+    <button mat-flat-button
         color="primary"
         matTooltip="Click to open/close map."
         class="score-board {{scoreBoardExpanded? 'expanded': ''}}"
         (click)="onScoreBoardClick()">
-    <p>Time left: {{0}}</p>
+    <p>Time left: {{settings.timerValue.minutes}} minute{{settings.timerValue.minutes > 1? 's': ''}} {{settings.timerValue.seconds}} seconds</p>
     <p>Score: {{settings.selectedMap.score == null? 0: settings.selectedMap.score}}</p>
-</button>
-<div [style.display]="scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
-    <app-google-maps [style]="getMapStyle()"></app-google-maps>
-    <button class="submit-btn" 
-            color="accent" 
-            (click)="onSubmitClick()"
-            matTooltip="Click to submit guess."
-            mat-raised-button
-            >Submit
+    </button>
+    <div [style.display]="scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
+        <app-google-maps [style]="getMapStyle()"></app-google-maps>
+        <button class="submit-btn" 
+                color="accent" 
+                (click)="onSubmitClick()"
+                matTooltip="Click to submit guess."
+                mat-raised-button
+                >Submit
+        </button>
+    </div>
+    <app-street-view [style]="getStreetViewStyle()"></app-street-view>
+    <button mat-stroked-button 
+            matTooltip="Reset to starting position."
+            class="reset-btn" 
+            (click)="onResetClick()">
+        <mat-icon>home</mat-icon>
     </button>
 </div>
-<app-street-view [style]="getStreetViewStyle()"></app-street-view>
-<button mat-stroked-button 
-        matTooltip="Reset to starting position."
-        class="reset-btn" 
-        (click)="onResetClick()">
-    <mat-icon>home</mat-icon>
-</button>
 

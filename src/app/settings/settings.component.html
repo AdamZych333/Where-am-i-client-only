@@ -20,5 +20,12 @@
               </mat-option>
             </mat-select>
         </mat-form-field>
+        <app-time-picker [disabled]="settings.started" [value]="settings.timerValue"></app-time-picker>
     </div>
+    <button mat-flat-button 
+            class="start-btn"
+            color="accent"
+            (click)="onStartClick()"
+      >Start
+    </button>
 </div>

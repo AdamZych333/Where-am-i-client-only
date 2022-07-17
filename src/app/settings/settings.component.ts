@@ -12,7 +12,8 @@ import { StreetViewService } from '../service/street-view.service';
 export class SettingsComponent implements OnInit{
   timeLeft: {minutes: number, seconds: number};
 
-  constructor(public settings: SettingsService, private googleMaps: GoogleMapService,private streetView: StreetViewService, public mapService: MapService) {
+
+  constructor(public settings: SettingsService, private googleMaps: GoogleMapService,private streetView: StreetViewService, private mapService: MapService) {
     this.timeLeft = settings.getTimeLeftToNextGeneraton();
   }
 
@@ -27,9 +28,18 @@ export class SettingsComponent implements OnInit{
     }, 1000);
   }
 
-  onSettingsChange(){
+  async onSettingsChange(){
+    this.settings.started = false;
+    this.settings.resetTimer();
     this.mapService.resetMaps();
     this.googleMaps.reset();
-    this.streetView.updateStreetView();
+    const latLng = await this.mapService.getCoordinates(this.settings.selectedMap);
+    if(latLng.lat == null || latLng.lng == null) return;
+    this.streetView.updateStreetViewPosition({lat: latLng.lat, lng: latLng.lng});
+  }
+
+  onStartClick(){
+    this.settings.started = true;
+    this.settings.startTimer();
   }
 }

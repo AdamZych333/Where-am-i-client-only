@@ -8,17 +8,13 @@ import { SettingsService } from './settings.service';
   providedIn: 'root'
 })
 export class MapService {
-
-  constructor(private settings: SettingsService, private mapLoader: MapLoaderService, private randomStreetView: RandomStreetviewService) {
-    for(let i = 0; i < settings.numberOfMaps; i++){
-      settings.maps.push(new Map((i+1).toString(), (i+1).toString()));
-    }
-    settings.selectedMap = settings.maps[0];
-  }
+  
+  constructor(private settings: SettingsService, private mapLoader: MapLoaderService, private randomStreetView: RandomStreetviewService) {}
 
   async getCoordinates(map: Map){
     let seed = this.settings.getCurrentGenerationSeed(map);
     if(!map.hasSetCoordinates() || map.seed !== seed){
+      console.log(`Loading coordinates for map: ${map.value}`)
       map.seed = seed;
       this.randomStreetView.setParameters({
         border: this.settings.selectedRegion.border,
@@ -34,8 +30,7 @@ export class MapService {
   resetMaps(){
     this.settings.maps.forEach(e => {
       if(e.seed != this.settings.getCurrentGenerationSeed(e)) {
-        e.score = null;
-        e.guess = null;
+        e.reset();
       }
     });
   }

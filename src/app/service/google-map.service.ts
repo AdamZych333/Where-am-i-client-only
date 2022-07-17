@@ -13,7 +13,7 @@ export class GoogleMapService {
   guess: any;
   drawings: any[] = [];
 
-  constructor(private settings: SettingsService, private mapService: MapService, private loadMaps: MapLoaderService) { }
+  constructor(private settings: SettingsService, private loadMaps: MapLoaderService) { }
 
   async setMap(mapElement: any){
     await this.loadMaps.load();

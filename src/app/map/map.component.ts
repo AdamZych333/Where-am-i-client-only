@@ -11,9 +11,6 @@ import { StreetViewService } from '../service/street-view.service';
   styleUrls: ['./map.component.sass']
 })
 export class MapComponent {
-  //@ViewChild('panorama') gpanoramaElement: HTMLElement | null = null;
-  //@ViewChild('map') gmapElement: HTMLElement | null = null;
-
   scoreBoardExpanded: boolean = false;
 
   @HostBinding("attr.style")
@@ -39,7 +36,8 @@ export class MapComponent {
   }
 
   onResetClick(){
-    this.streetView.resetPosition()
+    if(this.settings.selectedMap.lat == null || this.settings.selectedMap.lng == null) return;
+    this.streetView.updateStreetViewPosition({lat: this.settings.selectedMap.lat, lng: this.settings.selectedMap.lng})
   }
 
   onScoreBoardClick(){
@@ -53,5 +51,9 @@ export class MapComponent {
     this.settings.selectedMap.guess = guess;
     this.mapsService.setScore(guess, this.settings.selectedMap);
     this.googleMaps.addMarkers();
+  }
+
+  displayComponent(){
+    return this.settings.started? 'visible': 'hidden'
   }
 }

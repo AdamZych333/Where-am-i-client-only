@@ -1,0 +1,16 @@
+<mat-form-field appearance="outline" color="primary">
+    <mat-label>Minutes</mat-label>
+    <mat-select [disabled]="disabled" (selectionChange)="onMinutesChange($event)" [value]="timerValue.minutes">
+      <mat-option *ngFor="let minute of getSelectMinutes()" [value]="minute">
+        {{minute}}
+      </mat-option>
+    </mat-select>
+</mat-form-field>
+<mat-form-field appearance="outline" color="primary">
+    <mat-label>Seconds</mat-label>
+    <mat-select [disabled]="disabled" (selectionChange)="onSecondsChange($event)" [value]="timerValue.seconds">
+      <mat-option *ngFor="let minute of getSelectSeconds()" [value]="minute">
+        {{minute}}
+      </mat-option>
+    </mat-select>
+</mat-form-field>

@@ -14,4 +14,12 @@ export class Map{
     hasSetCoordinates(){
       return this.lat !== null && this.lng !== null;
     }
+
+    reset(){
+      this.lat = null;
+      this.lng = null;
+      this.seed = 0;
+      this.score = null;
+      this.guess = null;
+    }
 }
