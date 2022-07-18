@@ -1,5 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
-import { mulberry32 } from '../utils/randomNumberWithSeed';
+import { Injectable } from '@angular/core';
+import { rand } from '../utils/randomNumberWithSeed';
 import { MapLoaderService } from './map-loader.service';
 
 /*
@@ -32,7 +32,7 @@ export class RandomStreetviewService{
 
   async setParameters({
                           border = <any>[],
-                          seed = 0,
+                          seed = '0',
                           enableCaching = true,
                           endZoom = 14,
                           cacheKey = '',
@@ -117,7 +117,8 @@ class StreetView {
   google: any;
   area: number;
   distribution: string;
-  seed: number;
+  seed: string;
+  random: () => number;
   smallestContainingTile = {x: 0, y: 0, zoom: 0};
   typeColors = [
     {color: [84, 160, 185], id: 'sv'},
@@ -140,10 +141,11 @@ class StreetView {
     this.google = false;
     this.area = 1;
     this.distribution = '';
-    this.seed = 0;
+    this.seed = '0';
+    this.random = rand(this.seed);
   }
 
-  setParameters(polygon: any, seed: number, enableCaching: boolean, cacheKey: string, google: any) {
+  setParameters(polygon: any, seed: string, enableCaching: boolean, cacheKey: string, google: any) {
       this.google = google;
       this.cacheKey = cacheKey;
       this.enableCaching = enableCaching;
@@ -156,6 +158,7 @@ class StreetView {
           });
       this.area = area;
       this.seed = seed;
+      this.random = rand(this.seed);
   }
 
   async randomValidLocation({
@@ -195,10 +198,10 @@ class StreetView {
           return this.randomValidLocation({endZoom, type, distribution});
       }
       let randomSvPixel: number;
-      if(this.seed == 0){
+      if(this.seed == '0'){
         randomSvPixel = Math.floor(Math.random() * pixelCounts.count);
       }else{
-        randomSvPixel = Math.floor(mulberry32(this.seed)() * pixelCounts.count);
+        randomSvPixel = Math.floor(this.random() * pixelCounts.count);
       }
        
       let randomSvIndex = pixelCounts.indices[randomSvPixel];
@@ -556,11 +559,11 @@ class StreetView {
       let totalWeights = array.map(weightField).reduce((a:any, b:any) => a + b);
       for (let i = 0; i < len; i++) {
         let randomWeightValue
-        if(this.seed == 0){
+        if(this.seed == '0'){
             randomWeightValue = Math.random() * totalWeights;
         }
         else{
-            randomWeightValue = mulberry32(this.seed)() * totalWeights;
+            randomWeightValue = this.random() * totalWeights;
         }
         
         let weightedRandomIndex = -1;
@@ -582,10 +585,10 @@ class StreetView {
     shuffle(input:any) {
         for (let i = input.length - 1; i >= 0; i--) {
             let randomIndex;
-            if(this.seed === 0){
+            if(this.seed === '0'){
                 randomIndex = Math.floor(Math.random() * (i + 1));
             }else{
-                randomIndex = Math.floor(mulberry32(this.seed)() * (i + 1));
+                randomIndex = Math.floor(this.random() * (i + 1));
             }
             const itemAtIndex = input[randomIndex];
 

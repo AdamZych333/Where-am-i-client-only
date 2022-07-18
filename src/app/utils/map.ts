@@ -1,7 +1,7 @@
 export class Map{
     lat: number | null = null;
     lng: number | null = null;
-    seed: number = 0;
+    seed: string = '0';
     score: number | null = null;
     guess: {lat: number, lng: number} | null = null;
     constructor(public value: string, public viewValue: string){}
@@ -18,7 +18,7 @@ export class Map{
     reset(){
       this.lat = null;
       this.lng = null;
-      this.seed = 0;
+      this.seed = '0';
       this.score = null;
       this.guess = null;
     }

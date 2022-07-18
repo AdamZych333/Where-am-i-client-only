@@ -29,9 +29,9 @@ export class SettingsService {
     this.selectedMap = this.maps[0];
   }
 
-  getCurrentGenerationSeed(map: Map): number{
+  getCurrentGenerationSeed(map: Map): string{
     const currentDate = new Date();
-    return +`${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/this.generationTime)}${map.value}`
+    return `${currentDate.getUTCFullYear()}${currentDate.getUTCMonth()}${currentDate.getUTCDate()}${currentDate.getUTCHours()}${Math.floor(currentDate.getUTCMinutes()/this.generationTime)}${map.value}`
   }
 
   getTimeLeftToNextGeneraton(){
