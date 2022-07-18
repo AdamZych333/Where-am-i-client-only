@@ -59,12 +59,16 @@ export class MapService {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     const distance = R * c // meters
 
-    // distance capped at 5000km
-    const baseScore = Math.max(5000 - Math.round(distance/1000), 0); //kilemeters
-    // 1000x when closer than 4km
-    const bonus1 = Math.max(4000-Math.round(distance), 0);
-    // 10000x when closer than 100m
-    const bonus2 = Math.max(1000-Math.round(distance*10), 0);
-    return baseScore + bonus1 + bonus2;
+    // 1pkt per 1km in a distance of 5000km
+    const baseScore = Math.max(5000 - Math.round(distance/1000), 0);
+    // 2pkt per 1km in a distance of 1000km
+    const bonus1 = Math.max(2*(1000-Math.round(distance/1000)), 0);
+    // 10pkt per 1km in a distance of 100km
+    const bonus2 = Math.max(10*(100-Math.round(distance/1000)), 0);
+    // 1pkt per 5m in a distance of 5km
+    const bonus3 = Math.max((5000-Math.round(distance))/5, 0);
+    // 10pkt per 1m in a distance of 100m
+    const bonus4 = Math.max(10*(1000-Math.round(distance)), 0);
+    return baseScore + bonus1 + bonus2 + bonus3 + bonus4;
   }
 }
