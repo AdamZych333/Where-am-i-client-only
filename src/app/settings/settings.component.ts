@@ -38,6 +38,10 @@ export class SettingsComponent implements OnInit{
     const latLng = await this.mapService.getCoordinates(this.settings.selectedMap);
     if(latLng.lat == null || latLng.lng == null) return;
     this.streetView.updateStreetViewPosition({lat: latLng.lat, lng: latLng.lng});
+    if(this.settings.selectedMap.guess != null && this.settings.selectedMap.score != null){
+      this.settings.started = true;
+      this.mapService.scoreBoardExpanded = true;
+    }
   }
 
   onStartClick(){

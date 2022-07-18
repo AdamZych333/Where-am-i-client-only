@@ -39,6 +39,7 @@ export class GoogleMapService {
   }
 
   addMarkers(){
+    if(this.settings.selectedMap.guess == null && this.settings.selectedMap.score == null) return;
     const answerLatLng = {lat: this.settings.selectedMap.lat, lng: this.settings.selectedMap.lng}
     const to = new this.loadMaps.google.maps.Marker({
       position: answerLatLng,
