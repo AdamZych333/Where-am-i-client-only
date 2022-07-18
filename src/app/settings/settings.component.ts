@@ -41,6 +41,7 @@ export class SettingsComponent implements OnInit{
     if(this.settings.selectedMap.guess != null && this.settings.selectedMap.score != null){
       this.settings.started = true;
       this.mapService.scoreBoardExpanded = true;
+      this.startTimer();
     }
   }
 

@@ -13,7 +13,7 @@ export class GoogleMapService {
   guess: any;
   drawings: any[] = [];
 
-  constructor(private settings: SettingsService, private loadMaps: MapLoaderService) { }
+  constructor(private mapService:MapService, private settings: SettingsService, private loadMaps: MapLoaderService) { }
 
   async setMap(mapElement: any){
     await this.loadMaps.load();
@@ -24,7 +24,7 @@ export class GoogleMapService {
     })
 
     this.map.addListener("click", (e:any) => {
-      if(this.settings.selectedMap.score != null) return;
+      //if(this.settings.selectedMap.score != null) return;
       if(this.guess != undefined) {
         this.guess.setMap(null);
         this.guess = null;
@@ -35,6 +35,8 @@ export class GoogleMapService {
         map: this.map,
         label: {text: "?", color: "white"}
       })
+      this.mapService.setScore({lat: this.guess.getPosition().lat(), lng: this.guess.getPosition().lng()}, this.settings.selectedMap);
+      this.addMarkers();
     })
   }
 

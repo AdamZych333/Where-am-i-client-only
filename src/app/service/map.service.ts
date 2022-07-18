@@ -43,7 +43,22 @@ export class MapService {
     }
     const answerLatLng = {lat: map.lat, lng: map.lng}
     if(answerLatLng.lat == null || answerLatLng.lng == null) return;
-    this.settings.selectedMap.score = this.calculateScore(guess.lat, guess.lng, answerLatLng.lat, answerLatLng.lng);
+    
+    const distance = this.calculateScore(guess.lat, guess.lng, answerLatLng.lat, answerLatLng.lng);
+    console.log(distance);
+    // 1pkt per 6km in a distance of 12000km
+    const baseScore = Math.max(2000 - Math.round(distance/5500), 0);
+    // 1pkt per 3km in a distance of 4500km
+    const bonus1 = Math.max(1500 - Math.round(distance/3000), 0);
+    // 1pkt per 800m in a distance of 800km
+    const bonus2 = Math.max(1000 - Math.round(distance/800), 0);
+    // 1pkt per 200m in a distance of 68km
+    const bonus3 = Math.max(340 - Math.round(distance/200), 0);
+    // 1pkt per 5m in a distance of 1200m
+    const bonus4 = Math.max(120 - Math.round(distance/10), 0);
+    // 1pkt per 1m in a distance of 40m
+    const bonus5 = Math.max(40 - Math.round(distance), 0);
+    this.settings.selectedMap.score = baseScore + bonus1 + bonus2 + bonus3 + bonus4 + bonus5;
   }
 
   private calculateScore(guessLat:number, guessLng:number, answerLat:number, answerLng:number){
@@ -57,18 +72,7 @@ export class MapService {
         Math.cos(fi1) * Math.cos(fi2) *
         Math.sin(deltaLambda/2) * Math.sin(deltaLambda/2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    const distance = R * c // meters
 
-    // 1pkt per 1km in a distance of 5000km
-    const baseScore = Math.max(5000 - Math.round(distance/1000), 0);
-    // 2pkt per 1km in a distance of 1000km
-    const bonus1 = Math.max(2*(1000-Math.round(distance/1000)), 0);
-    // 10pkt per 1km in a distance of 100km
-    const bonus2 = Math.max(10*(100-Math.round(distance/1000)), 0);
-    // 1pkt per 5m in a distance of 5km
-    const bonus3 = Math.max((5000-Math.round(distance))/5, 0);
-    // 10pkt per 1m in a distance of 100m
-    const bonus4 = Math.max(10*(1000-Math.round(distance)), 0);
-    return baseScore + bonus1 + bonus2 + bonus3 + bonus4;
+    return R * c // meters
   }
 }
