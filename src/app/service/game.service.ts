@@ -89,7 +89,8 @@ export class GameService {
       map: this.map,
       label: {text: "!", color: 'yellow'}
     })
-    this.drawings.push(to)
+    this.drawings.push(to);
+    this.setCenter(this.currentMap.answer);
     if(this.currentMap.guess != null){
       const from = new this.mapLoader.google.maps.Marker({
         position: this.currentMap.guess,
@@ -108,9 +109,9 @@ export class GameService {
     }
   }
 
-  // setCenter(latLng: {lat: number | null, lng: number | null}){
-  //   this.map.setCenter(new this.loadMaps.google.maps.LatLng(latLng));
-  // }
+  setCenter(latLng: {lat: number | null, lng: number | null}){
+     this.map.setCenter(new this.mapLoader.google.maps.LatLng(latLng));
+  }
 
   // reset(){
   //   if(this.guess != null){

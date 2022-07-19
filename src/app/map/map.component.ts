@@ -21,8 +21,8 @@ export class MapComponent implements OnInit {
     this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
-    if(this.timeLeft != 0)
-      this.startTimer();
+    if(this.timeLeft == 0) return;
+    this.startTimer();
   }
 
   getStreetViewStyle(){
@@ -44,7 +44,10 @@ export class MapComponent implements OnInit {
   }
 
   startTimer(){
-    if(this.timeLeft <= 0) return;
+    if(this.timeLeft <= 0) {
+      this.onTimeEnd();
+      return;
+    }
     this.timer = setTimeout(() => {
       this.timeLeft--;
       this.startTimer();
@@ -74,6 +77,20 @@ export class MapComponent implements OnInit {
     const guess = {lat: this.game.currentGuess.position.lat(), lng: this.game.currentGuess.position.lng()};
     this.game.currentMap.guess = guess;
     this.game.setScore(guess);
+    this.game.addMarkers();
+  }
+
+  onTimeEnd(){
+    if(this.game.currentGuess != undefined){
+      const guess = {lat: this.game.currentGuess.position.lat(), lng: this.game.currentGuess.position.lng()};
+      this.game.currentMap.guess = guess;
+      this.game.setScore(guess);
+    }
+    else {
+      this.scoreBoardExpanded = true;
+      this.game.setScore(null);
+    }
+
     this.game.addMarkers();
   }
 }
