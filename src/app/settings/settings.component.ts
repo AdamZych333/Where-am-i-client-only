@@ -1,7 +1,5 @@
 import { Component} from '@angular/core';
 import { Router } from '@angular/router';
-import { GoogleMapService } from '../service/google-map.service';
-import { MapService } from '../service/map.service';
 import { Region, regions } from '../utils/region';
 
 @Component({

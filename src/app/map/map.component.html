@@ -2,12 +2,12 @@
     <button mat-flat-button
         color="primary"
         matTooltip="Click to open/close map."
-        class="score-board {{mapsService.scoreBoardExpanded? 'expanded': ''}}"
+        class="score-board {{scoreBoardExpanded? 'expanded': ''}}"
         (click)="onScoreBoardClick()">
     <p>Time left: {{getTimerValue().minutes}} minutes {{getTimerValue().seconds}} seconds</p>
     <p>Score: 0</p>
     </button>
-    <div [style.display]="mapsService.scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
+    <div [style.display]="scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
         <app-google-maps [style]="getMapStyle()"></app-google-maps>
         <button class="submit-btn" 
                 color="accent" 

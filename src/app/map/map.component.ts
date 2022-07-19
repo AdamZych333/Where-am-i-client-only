@@ -1,9 +1,6 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GameService } from '../service/game.service';
-import { GoogleMapService } from '../service/google-map.service';
-import { MapService } from '../service/map.service';
-import { Region, regions } from '../utils/region';
 
 @Component({
   selector: 'app-map',
@@ -13,13 +10,14 @@ import { Region, regions } from '../utils/region';
 export class MapComponent implements OnInit {
   timeLeft: number;
   timer: any;
+  scoreBoardExpanded = false;
 
   @HostBinding("attr.style")
   public get panoramaWidth(): any {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(private game: GameService, public mapsService: MapService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService) {
+  constructor(private game: GameService, private sanitizer: DomSanitizer) {
     this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
@@ -67,19 +65,14 @@ export class MapComponent implements OnInit {
   }
 
   onScoreBoardClick(){
-    this.mapsService.scoreBoardExpanded = !this.mapsService.scoreBoardExpanded;
+    this.scoreBoardExpanded = !this.scoreBoardExpanded;
   }
 
   onSubmitClick(){
-    // const marker = this.googleMaps.guess;
-    // if(marker == undefined || this.settings.selectedMap.score != null) return;
-    // const guess = {lat: marker.position.lat(), lng: marker.position.lng()};
-    // this.settings.selectedMap.guess = guess;
-    // this.mapsService.setScore(guess, this.settings.selectedMap);
-    // this.googleMaps.addMarkers();
-  }
-
-  displayComponent(){
-    // return this.settings.started? 'visible': 'hidden'
+    if(this.game.currentGuess == undefined || this.game.currentMap.score != null) return;
+    const guess = {lat: this.game.currentGuess.position.lat(), lng: this.game.currentGuess.position.lng()};
+    this.game.currentMap.guess = guess;
+    this.game.setScore(guess);
+    this.game.addMarkers();
   }
 }

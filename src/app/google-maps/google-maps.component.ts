@@ -1,7 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { GoogleMapService } from '../service/google-map.service';
-import { MapLoaderService } from '../service/map-loader.service';
-import { MapService } from '../service/map.service';
+import { GameService } from '../service/game.service';
 
 @Component({
   selector: 'app-google-maps',
@@ -12,9 +10,9 @@ export class GoogleMapsComponent {
   @ViewChild('container') containerElement: HTMLElement | null = null;
   @Input() style = {}
 
-  constructor(private googleMapsService: GoogleMapService) { }
+  constructor(private game: GameService) { }
 
   ngAfterViewInit(): void {
-    if(this.containerElement != null) this.googleMapsService.setMap(this.containerElement);
+    if(this.containerElement != null) this.game.setMap(this.containerElement);
   }
 }
