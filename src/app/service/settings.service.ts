@@ -16,10 +16,7 @@ export class SettingsService {
   selectedRegion = this.regions[0];
   started: boolean = false;
   
-  timerValue = {
-    minutes: 3,
-    seconds: 0,
-  }
+  timerValue = 180;
   timer: any;
   
   constructor() {

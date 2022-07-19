@@ -10,7 +10,7 @@ import { StreetViewService } from '../service/street-view.service';
   styleUrls: ['./settings.component.sass']
 })
 export class SettingsComponent{
-  pickedTime: {minutes: number, seconds: number};
+  pickedTime: number;
 
   constructor(public settings: SettingsService, private googleMaps: GoogleMapService,private streetView: StreetViewService, private mapService: MapService) {
     this.pickedTime = settings.timerValue;

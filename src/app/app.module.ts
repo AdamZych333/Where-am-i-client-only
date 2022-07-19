@@ -16,6 +16,7 @@ import { MapComponent } from './map/map.component';
 import { GoogleMapsComponent } from './google-maps/google-maps.component';
 import { StreetViewComponent } from './street-view/street-view.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TimePickerComponent } from './time-picker/time-picker.component';
     MapComponent,
     GoogleMapsComponent,
     StreetViewComponent,
-    TimePickerComponent
+    TimePickerComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,

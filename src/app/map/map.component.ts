@@ -1,4 +1,4 @@
-import { Component, HostBinding } from '@angular/core';
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GoogleMapService } from '../service/google-map.service';
 import { MapService } from '../service/map.service';
@@ -10,14 +10,19 @@ import { StreetViewService } from '../service/street-view.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.sass']
 })
-export class MapComponent {
+export class MapComponent implements OnInit {
+  @Input() seed: string = '';
+  @Input() region: string = '';
+  @Input() timer: number = 0;
 
   @HostBinding("attr.style")
   public get panoramaWidth(): any {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
+  constructor(public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService, private streetView: StreetViewService) {}
+  ngOnInit(): void {
+    console.log(this.seed+"???")
   }
 
   getStreetViewStyle(){
