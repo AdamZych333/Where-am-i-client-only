@@ -23,9 +23,15 @@ export class SettingsComponent{
   onCreateClick(){
     this.router.navigate(['/game'], {
       queryParams: {
-        s: this.generateSeed(this.seedLength)
+        s: this.generateSeed(this.seedLength),
+        t: this.timerValue,
+        r: this.selectedRegion.value
       }
     });
+  }
+
+  changeTime(newValue: number){
+    this.timerValue = newValue;
   }
 
   generateSeed(length: number){

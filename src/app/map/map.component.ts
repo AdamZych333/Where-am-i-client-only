@@ -51,10 +51,12 @@ export class MapComponent implements OnInit {
       data: {
         title: this.game.params.region.viewValue,
         time: this.game.params.timer
-      }
+      },
+      disableClose: true
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result == undefined) return;
       if(result.prev) {
         this.onPrevClick();
         return;

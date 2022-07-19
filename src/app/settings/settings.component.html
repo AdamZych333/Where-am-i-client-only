@@ -1,5 +1,5 @@
 <div class="menu">
-    <h1>Create game</h1>
+    <h1><b>Create game</b></h1>
     <mat-form-field appearance="outline" color="primary">
       <mat-label>Region</mat-label>
       <mat-select [(ngModel)]="selectedRegion">
@@ -8,8 +8,9 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <app-time-picker [value]="timerValue" (onValueChange)="changeTime($event)"></app-time-picker>
     <button mat-flat-button 
-            class="start-btn"
+            class="create-btn"
             color="accent"
             (click)="onCreateClick()"
       >Create
