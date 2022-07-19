@@ -1,24 +1,24 @@
 export class Map{
-    lat: number | null = null;
-    lng: number | null = null;
-    seed: string = '0';
+    answer: {lat: number, lng: number};
     score: number | null = null;
     guess: {lat: number, lng: number} | null = null;
-    constructor(public value: string, public viewValue: string){}
+    constructor(public value: string, public viewValue: string, lat: number, lng: number){
+      this.answer= {
+        lat: lat,
+        lng: lng
+      }
+    }
   
     setCoordinates(lat: number, lng: number){
-      this.lat = lat;
-      this.lng = lng;
+      this.answer.lat = lat;
+      this.answer.lng = lng;
     }
   
     hasSetCoordinates(){
-      return this.lat !== null && this.lng !== null;
+      return this.answer.lat !== null && this.answer.lng !== null;
     }
 
     reset(){
-      this.lat = null;
-      this.lng = null;
-      this.seed = '0';
       this.score = null;
       this.guess = null;
     }

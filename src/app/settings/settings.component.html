@@ -2,8 +2,8 @@
     <h1>Create game</h1>
     <mat-form-field appearance="outline" color="primary">
       <mat-label>Region</mat-label>
-      <mat-select (selectionChange)="onRegionChange()" [(ngModel)]="settings.selectedRegion">
-        <mat-option *ngFor="let region of settings.regions" [value]="region">
+      <mat-select [(ngModel)]="selectedRegion">
+        <mat-option *ngFor="let region of getRegions()" [value]="region">
           {{region.viewValue}}
         </mat-option>
       </mat-select>

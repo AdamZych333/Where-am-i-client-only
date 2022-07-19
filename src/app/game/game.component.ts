@@ -1,20 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GameService } from '../service/game.service';
 import { SettingsService } from '../service/settings.service';
+import { Region, regions } from '../utils/region';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.sass']
+  styleUrls: ['./game.component.sass'],
+  providers: [GameService]
 })
 export class GameComponent implements OnInit {
   gameSeed: string = '';
-  region: string;
+  region: Region;
   timer: number;
 
-  constructor(settings: SettingsService, private route: ActivatedRoute, private router: Router) {
-    this.region = settings.regions[0].value;
-    this.timer = settings.timerValue;
+  constructor(gameService: GameService, private route: ActivatedRoute, private router: Router) {
+    this.region = gameService.params.region;
+    this.timer = gameService.params.timer;
    }
 
   ngOnInit(): void {
@@ -25,8 +28,9 @@ export class GameComponent implements OnInit {
           return;
         }
         this.gameSeed = params['s'];
-        if(params['r'] !== undefined){
-          this.region = params['r'];
+        const r = regions.find(e => e.value === params['r']);
+        if(params['r'] !== undefined && r !== undefined){
+          this.region = r;
         }
         if(params['t'] !== undefined){
           this.timer = params['t'];
@@ -34,4 +38,7 @@ export class GameComponent implements OnInit {
       })
   }
 
+  getShowMap(){
+    return this.gameSeed != '';
+  }
 }

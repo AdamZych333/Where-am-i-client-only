@@ -3,6 +3,7 @@ import { GoogleMapService } from '../service/google-map.service';
 import { MapService } from '../service/map.service';
 import { SettingsService } from '../service/settings.service';
 import { StreetViewService } from '../service/street-view.service';
+import { Region, regions } from '../utils/region';
 
 @Component({
   selector: 'app-settings',
@@ -10,13 +11,15 @@ import { StreetViewService } from '../service/street-view.service';
   styleUrls: ['./settings.component.sass']
 })
 export class SettingsComponent{
-  pickedTime: number;
+  timerValue: number = 180;
+  selectedRegion: Region;
 
-  constructor(public settings: SettingsService, private googleMaps: GoogleMapService,private streetView: StreetViewService, private mapService: MapService) {
-    this.pickedTime = settings.timerValue;
+  constructor() {
+    this.selectedRegion = regions[0];
   }
 
-  async onRegionChange(){
+  getRegions(){
+    return regions;
   }
 
   onCreateClick(){

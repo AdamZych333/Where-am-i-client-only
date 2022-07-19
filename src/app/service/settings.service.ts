@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Map } from '../utils/map';
-import { Region } from '../utils/region';
+import { Region, regions } from '../utils/region';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +10,8 @@ export class SettingsService {
   numberOfMaps = 20;
   maps: Map[] = <Map[]>[];
   selectedMap: Map;
-  regions: Region[] = [
-    new Region('world', 'The World', []),
-  ]
-  selectedRegion = this.regions[0];
+
+  selectedRegion = regions[0];
   started: boolean = false;
   
   timerValue = 180;
@@ -21,7 +19,7 @@ export class SettingsService {
   
   constructor() {
     for(let i = 0; i < this.numberOfMaps; i++){
-      this.maps.push(new Map((i+1).toString(), (i+1).toString()));
+      this.maps.push(new Map((i+1).toString(), (i+1).toString(), 0, 0));
     }
     this.selectedMap = this.maps[0];
   }

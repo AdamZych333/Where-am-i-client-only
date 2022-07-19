@@ -1,9 +1,11 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { GameService } from '../service/game.service';
 import { GoogleMapService } from '../service/google-map.service';
 import { MapService } from '../service/map.service';
 import { SettingsService } from '../service/settings.service';
 import { StreetViewService } from '../service/street-view.service';
+import { Region, regions } from '../utils/region';
 
 @Component({
   selector: 'app-map',
@@ -11,18 +13,22 @@ import { StreetViewService } from '../service/street-view.service';
   styleUrls: ['./map.component.sass']
 })
 export class MapComponent implements OnInit {
-  @Input() seed: string = '';
-  @Input() region: string = '';
-  @Input() timer: number = 0;
+  @Input() seed: string;
+  @Input() region: Region;
+  @Input() timer: number;
 
   @HostBinding("attr.style")
   public get panoramaWidth(): any {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService, private streetView: StreetViewService) {}
+  constructor(private game: GameService, public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
+    this.seed = game.params.seed;
+    this.region = game.params.region;
+    this.timer = game.params.timer;
+  }
   ngOnInit(): void {
-    console.log(this.seed+"???")
+    this.game.setParameters(this.seed, this.region, this.timer);
   }
 
   getStreetViewStyle(){
@@ -40,8 +46,8 @@ export class MapComponent implements OnInit {
   }
 
   onResetClick(){
-    if(this.settings.selectedMap.lat == null || this.settings.selectedMap.lng == null) return;
-    this.streetView.updateStreetViewPosition({lat: this.settings.selectedMap.lat, lng: this.settings.selectedMap.lng})
+    // if(this.settings.selectedMap.lat == null || this.settings.selectedMap.lng == null) return;
+    // this.streetView.updateStreetViewPosition({lat: this.settings.selectedMap.lat, lng: this.settings.selectedMap.lng})
   }
 
   onScoreBoardClick(){

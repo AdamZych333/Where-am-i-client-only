@@ -12,14 +12,14 @@ export class StreetViewService {
   constructor(private settings: SettingsService, private loadMaps: MapLoaderService, private mapService: MapService) { }
 
   async setStreetView(panoramaElement: any){
-    await this.loadMaps.load();
-    const latLng = await this.mapService.getCoordinates(this.settings.selectedMap);
-    this.panorama = new this.loadMaps.google.maps.StreetViewPanorama(panoramaElement.nativeElement, {
-      position: new this.loadMaps.google.maps.LatLng(latLng.lat, latLng.lng),
-      zoom: 1,
-      pov: { heading: 0, pitch: 0 },
-      showRoadLabels: false,
-    })
+    // await this.loadMaps.load();
+    // const latLng = await this.mapService.getCoordinates(this.settings.selectedMap);
+    // this.panorama = new this.loadMaps.google.maps.StreetViewPanorama(panoramaElement.nativeElement, {
+    //   position: new this.loadMaps.google.maps.LatLng(latLng.lat, latLng.lng),
+    //   zoom: 1,
+    //   pov: { heading: 0, pitch: 0 },
+    //   showRoadLabels: false,
+    // })
   }
 
   async updateStreetViewPosition(position: {lat: number, lng: number}){
