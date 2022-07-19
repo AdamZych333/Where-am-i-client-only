@@ -1,6 +1,5 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { GameService } from '../service/game.service';
-import { StreetViewService } from '../service/street-view.service';
 
 @Component({
   selector: 'app-street-view',

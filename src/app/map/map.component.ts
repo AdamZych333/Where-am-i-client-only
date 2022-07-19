@@ -4,7 +4,6 @@ import { GameService } from '../service/game.service';
 import { GoogleMapService } from '../service/google-map.service';
 import { MapService } from '../service/map.service';
 import { SettingsService } from '../service/settings.service';
-import { StreetViewService } from '../service/street-view.service';
 import { Region, regions } from '../utils/region';
 
 @Component({
@@ -22,7 +21,7 @@ export class MapComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(private game: GameService, public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService, private streetView: StreetViewService) {
+  constructor(private game: GameService, public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService) {
     this.seed = game.params.seed;
     this.region = game.params.region;
     this.timer = game.params.timer;
@@ -46,8 +45,7 @@ export class MapComponent implements OnInit {
   }
 
   onResetClick(){
-    // if(this.settings.selectedMap.lat == null || this.settings.selectedMap.lng == null) return;
-    // this.streetView.updateStreetViewPosition({lat: this.settings.selectedMap.lat, lng: this.settings.selectedMap.lng})
+    this.game.resetPanoramaPosition();
   }
 
   onScoreBoardClick(){

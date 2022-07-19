@@ -2,7 +2,6 @@ import { Component} from '@angular/core';
 import { GoogleMapService } from '../service/google-map.service';
 import { MapService } from '../service/map.service';
 import { SettingsService } from '../service/settings.service';
-import { StreetViewService } from '../service/street-view.service';
 import { Region, regions } from '../utils/region';
 
 @Component({

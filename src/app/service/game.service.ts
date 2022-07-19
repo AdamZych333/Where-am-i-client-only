@@ -51,6 +51,10 @@ export class GameService {
     })
   }
 
+  resetPanoramaPosition(){
+    this.panorama.setPosition(this.currentMap.answer);
+  }
+
   async updateStreetViewPosition(position: {lat: number, lng: number}){
     this.panorama.setPosition(position);
   }

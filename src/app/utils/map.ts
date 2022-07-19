@@ -13,10 +13,6 @@ export class Map{
       this.answer.lat = lat;
       this.answer.lng = lng;
     }
-  
-    hasSetCoordinates(){
-      return this.answer.lat !== null && this.answer.lng !== null;
-    }
 
     reset(){
       this.score = null;
