@@ -26,6 +26,26 @@ export class GameService {
     }
    }
 
+   isCurrentMapFinnished(){
+    return this.currentMap != undefined && this.currentMap.score != null;
+   }
+
+   setToPreviousMap(){
+    const currIndex = this.maps.indexOf(this.currentMap);
+    if(currIndex === 0) return;
+    this.currentMap = this.maps[currIndex-1];
+    this.setPanoramaPosition(this.currentMap.answer);
+    this.removeDrawings();
+   }
+
+   async setToNextMap(){
+    const currIndex = this.maps.indexOf(this.currentMap);
+    if(currIndex === this.maps.length-1) await this.generateMap();
+    else this.currentMap = this.maps[currIndex+1];
+    this.setPanoramaPosition(this.currentMap.answer);
+    this.removeDrawings();
+   }
+
    setParameters(seed: string, region = this.params.region, timer = this.params.timer){
     this.params.seed = seed;
     this.params.region = region;
@@ -35,7 +55,7 @@ export class GameService {
    async generateMap(){
     this.randomStreetView.setParameters({
       border: this.params.region.border,
-      seed: this.params.seed,
+      seed: this.params.seed + this.maps.indexOf(this.currentMap),
       google: await this.mapLoader.load()
     })
     const location = await this.randomStreetView.getRandomLocation();
@@ -54,8 +74,8 @@ export class GameService {
     })
   }
 
-  resetPanoramaPosition(){
-    this.panorama.setPosition(this.currentMap.answer);
+  setPanoramaPosition(position: {lat: number, lng: number}){
+    this.panorama.setPosition(position);
   }
 
   async setMap(mapElement: any){
@@ -109,23 +129,29 @@ export class GameService {
     }
   }
 
+  reset(){
+    this.removeDrawings();
+    if(this.map != undefined){
+      this.map.setCenter(new this.mapLoader.google.maps.LatLng(0, 0));
+      this.map.setZoom(2);
+    }
+  }
+
+  removeDrawings(){
+    while(this.drawings.length > 0){
+      let drawing = this.drawings.pop();
+      drawing.setMap(null);
+      drawing = null;
+    }
+    if(this.currentGuess != undefined){
+      this.currentGuess.setMap(null);
+      this.currentGuess = null;
+    }
+  }
+
   setCenter(latLng: {lat: number | null, lng: number | null}){
      this.map.setCenter(new this.mapLoader.google.maps.LatLng(latLng));
   }
-
-  // reset(){
-  //   if(this.guess != null){
-  //     this.guess.setMap(null);
-  //     this.guess = null;
-  //   }
-  //   while(this.drawings.length > 0){
-  //     let drawing = this.drawings.pop();
-  //     drawing.setMap(null)
-  //     drawing = null;
-  //   }
-  //   this.map.setCenter(new this.loadMaps.google.maps.LatLng(this.defaultLatLng.lat, this.defaultLatLng.lng));
-  //   this.map.setZoom(this.defaultZoom);
-  // }
 
   setScore(guess: {lat: number, lng: number} | null){
     if(guess == null){

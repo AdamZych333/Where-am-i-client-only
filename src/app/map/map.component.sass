@@ -7,8 +7,8 @@ $panorama-width: var(--panorama-width)
     height: $btn-height
     min-width: 0
     position: relative
-    background-color: hsla(0, 0, 15, 1)
-    color: hsla(0, 0, 80, 1)
+    background-color: hsla(0, 0%, 15%, 1)
+    color: hsla(0, 0%, 80%, 1)
     top: -27vh
     left: calc($panorama-width - $btn-width - 13px)
     z-index: 2
@@ -52,3 +52,10 @@ $panorama-width: var(--panorama-width)
     .submit-btn
         width: 100px
         margin: 7px 0
+    
+    .buttons
+        width: 100%
+        display: flex
+        flex-direction: row
+        justify-content: space-around
+

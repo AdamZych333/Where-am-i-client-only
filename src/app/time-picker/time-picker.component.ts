@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-time-picker',
@@ -6,25 +6,17 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./time-picker.component.sass']
 })
 export class TimePickerComponent implements OnInit {
-  @Input() value: {minutes: number, seconds: number} = {
-    minutes: 0,
-    seconds: 0
-  };
+  @Input() value = 180;
   @Input() max: number = 600;
   @Input() min: number = 0;
   @Input() step: number = 15;
   @Input() disabled: boolean = false;
-  timerValue = {
-    minutes: 0, 
-    seconds: 0
-  };
+  @Output() onValueChange = new EventEmitter<number>();
 
   constructor() { }
 
 
   ngOnInit(): void {
-    this.timerValue.minutes = this.value.minutes;
-    this.timerValue.seconds = this.value.seconds;
   }
 
   getSelectMinutes(){
@@ -37,21 +29,23 @@ export class TimePickerComponent implements OnInit {
 
   getSelectSeconds(){
     const items: number[] = []
-    for(let i = 0; i <= Math.min(59, this.max-this.value.minutes*60); i+=this.step){
+    for(let i = 0; i <= Math.min(59, this.max-this.value%60); i+=this.step){
       items.push(i);
     }
     return items;
   }
 
   onMinutesChange(event: any){
-    this.value.minutes = event.value;
+    this.value = event.value*60 + Math.floor((this.value%60)/15)*15;
+    this.onValueChange.emit(this.value);
   }
 
   onSecondsChange(event: any){
-    this.value.seconds = event.value;
+    this.value = event.value + Math.floor(this.value/60)*60;
+    this.onValueChange.emit(this.value);
   }
 
   getDefaultValue(){
-    return {minutes: this.value.minutes, seconds: this.value.seconds};
+    return {minutes: Math.floor(this.value/60), seconds: Math.floor((this.value%60)/15)*15};
   }
 }

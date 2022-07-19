@@ -5,7 +5,7 @@
         class="score-board {{scoreBoardExpanded? 'expanded': ''}}"
         (click)="onScoreBoardClick()">
     <p>Time left: {{getTimerValue().minutes}} minutes {{getTimerValue().seconds}} seconds</p>
-    <p>Score: 0</p>
+    <p>Score: {{getScore()}}</p>
     </button>
     <div [style.display]="scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
         <app-google-maps [style]="getMapStyle()"></app-google-maps>
@@ -14,8 +14,27 @@
                 (click)="onSubmitClick()"
                 matTooltip="Click to submit guess."
                 mat-raised-button
+                *ngIf="!getIsGameFinnished(); else finnished"
                 >Submit
         </button>
+        <ng-template #finnished>
+            <div class="buttons">
+                <button class="submit-btn" 
+                    color="accent" 
+                    (click)="onPrevClick()"
+                    matTooltip="Click to go to prevoius map."
+                    mat-raised-button
+                    >Previous
+                </button>
+                <button class="submit-btn" 
+                    color="accent" 
+                    (click)="onNextClick()"
+                    matTooltip="Click to go to next map."
+                    mat-raised-button
+                    >Next
+                </button>
+            </div>
+        </ng-template>
     </div>
     <app-street-view [style]="getStreetViewStyle()"></app-street-view>
     <button mat-stroked-button 

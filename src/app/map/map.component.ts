@@ -1,5 +1,7 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MenuComponent } from '../menu/menu.component';
 import { GameService } from '../service/game.service';
 
 @Component({
@@ -17,12 +19,16 @@ export class MapComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(private game: GameService, private sanitizer: DomSanitizer) {
+  constructor(public dialog: MatDialog, private game: GameService, private sanitizer: DomSanitizer) {
     this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
-    if(this.timeLeft == 0) return;
-    this.startTimer();
+    if(this.game.isCurrentMapFinnished()){
+      this.scoreBoardExpanded = true;
+      return;
+    }
+    this.showDialog();
+
   }
 
   getStreetViewStyle(){
@@ -39,8 +45,42 @@ export class MapComponent implements OnInit {
     }
   }
 
+  showDialog(){
+    const dialogRef = this.dialog.open(MenuComponent, {
+      data: {
+        title: this.game.params.region.viewValue,
+        time: this.game.params.timer
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.prev) {
+        this.onPrevClick();
+        return;
+      }
+      if(result.next) {
+        this.onNextClick();
+        return;
+      }
+      this.game.params.timer = result.time;
+      this.timeLeft = result.time;
+      if(this.timeLeft == 0) return;
+        this.startTimer();
+    })
+  }
+
+  getIsGameFinnished(){
+    return this.game.isCurrentMapFinnished();
+  }
+
   getTimerValue(){
     return {minutes: Math.floor(this.timeLeft/60), seconds: this.timeLeft%60};
+  }
+
+  getScore(){
+    if(this.game.currentMap == undefined)
+      return 0;
+    return this.game.currentMap.score == null? 0: this.game.currentMap.score;
   }
 
   startTimer(){
@@ -65,7 +105,7 @@ export class MapComponent implements OnInit {
   }
 
   onResetClick(){
-    this.game.resetPanoramaPosition();
+    this.game.setPanoramaPosition(this.game.currentMap.answer);
   }
 
   onScoreBoardClick(){
@@ -73,11 +113,35 @@ export class MapComponent implements OnInit {
   }
 
   onSubmitClick(){
-    if(this.game.currentGuess == undefined || this.game.currentMap.score != null) return;
+    if(this.game.currentGuess == undefined || this.game.isCurrentMapFinnished()) return;
     const guess = {lat: this.game.currentGuess.position.lat(), lng: this.game.currentGuess.position.lng()};
     this.game.currentMap.guess = guess;
+    this.stopTimer();
     this.game.setScore(guess);
     this.game.addMarkers();
+  }
+
+  onPrevClick(){
+    this.game.setToPreviousMap();
+    this.mapChange();
+  }
+
+  async onNextClick(){
+    await this.game.setToNextMap();
+    this.mapChange();
+  }
+
+  mapChange(){
+    if(this.game.isCurrentMapFinnished()){
+      this.scoreBoardExpanded = true; 
+      this.game.addMarkers();
+    }
+    else{
+      this.scoreBoardExpanded = false;
+      this.game.reset();
+      this.showDialog();
+    }
+    
   }
 
   onTimeEnd(){

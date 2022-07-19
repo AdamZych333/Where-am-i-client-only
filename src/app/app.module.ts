@@ -7,6 +7,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDialogModule} from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { GoogleMapsComponent } from './google-maps/google-maps.component';
 import { StreetViewComponent } from './street-view/street-view.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { GameComponent } from './game/game.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { GameComponent } from './game/game.component';
     GoogleMapsComponent,
     StreetViewComponent,
     TimePickerComponent,
-    GameComponent
+    GameComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +42,7 @@ import { GameComponent } from './game/game.component';
     MatSelectModule,
     MatFormFieldModule,
     MatTooltipModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
