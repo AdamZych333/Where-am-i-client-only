@@ -105,7 +105,7 @@ export class MapComponent implements OnInit {
   }
 
   onResetClick(){
-    this.game.setPanoramaPosition(this.game.currentMap.answer);
+    this.game.resetSVPosition();
   }
 
   onScoreBoardClick(){

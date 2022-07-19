@@ -3,6 +3,7 @@ import { Map } from '../utils/map';
 import { Region, regions } from '../utils/region';
 import { MapLoaderService } from './map-loader.service';
 import { RandomStreetviewService } from './random-streetview.service';
+import { StreetViewService } from './street-view.service';
 
 @Injectable()
 export class GameService {
@@ -18,7 +19,7 @@ export class GameService {
   maps: Map[] = [];
   currentMap: Map = this.maps[0];
 
-  constructor(private randomStreetView: RandomStreetviewService, private mapLoader: MapLoaderService ) {
+  constructor(private streetView: StreetViewService, private randomStreetView: RandomStreetviewService, private mapLoader: MapLoaderService ) {
     this.params = {
       seed: '',
       region: regions[0],
@@ -30,11 +31,15 @@ export class GameService {
     return this.currentMap != undefined && this.currentMap.score != null;
    }
 
+   resetSVPosition(){
+    this.streetView.setPanoramaPosition(this.currentMap.answer);
+   }
+
    setToPreviousMap(){
     const currIndex = this.maps.indexOf(this.currentMap);
     if(currIndex === 0) return;
     this.currentMap = this.maps[currIndex-1];
-    this.setPanoramaPosition(this.currentMap.answer);
+    this.streetView.setPanoramaPosition(this.currentMap.answer);
     this.removeDrawings();
    }
 
@@ -42,7 +47,7 @@ export class GameService {
     const currIndex = this.maps.indexOf(this.currentMap);
     if(currIndex === this.maps.length-1) await this.generateMap();
     else this.currentMap = this.maps[currIndex+1];
-    this.setPanoramaPosition(this.currentMap.answer);
+    this.streetView.setPanoramaPosition(this.currentMap.answer);
     this.removeDrawings();
    }
 
@@ -63,20 +68,6 @@ export class GameService {
     this.currentMap = new Map(index, index, location[0], location[1]);
     this.maps.push(this.currentMap);
    }
-
-   async setStreetView(panoramaElement: any){
-    await this.mapLoader.load();
-    this.panorama = new this.mapLoader.google.maps.StreetViewPanorama(panoramaElement.nativeElement, {
-      position: new this.mapLoader.google.maps.LatLng(this.currentMap.answer),
-      zoom: 1,
-      pov: { heading: 0, pitch: 0 },
-      showRoadLabels: false,
-    })
-  }
-
-  setPanoramaPosition(position: {lat: number, lng: number}){
-    this.panorama.setPosition(position);
-  }
 
   async setMap(mapElement: any){
     await this.mapLoader.load();
