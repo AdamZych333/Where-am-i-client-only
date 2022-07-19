@@ -21,7 +21,8 @@ export class MapComponent implements OnInit {
     this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
-    this.startTimer();
+    if(this.timeLeft != 0)
+      this.startTimer();
   }
 
   getStreetViewStyle(){
@@ -43,7 +44,7 @@ export class MapComponent implements OnInit {
   }
 
   startTimer(){
-    if(this.timeLeft === 0) return;
+    if(this.timeLeft <= 0) return;
     this.timer = setTimeout(() => {
       this.timeLeft--;
       this.startTimer();
