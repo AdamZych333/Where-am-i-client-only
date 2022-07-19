@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MenuComponent } from '../menu/menu.component';
 import { GameService } from '../service/game.service';
+import { GoogleMapService } from '../service/google-map.service';
 
 @Component({
   selector: 'app-map',
@@ -19,7 +20,7 @@ export class MapComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(public dialog: MatDialog, private game: GameService, private sanitizer: DomSanitizer) {
+  constructor(private googleMaps: GoogleMapService, private dialog: MatDialog, private game: GameService, private sanitizer: DomSanitizer) {
     this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
@@ -113,12 +114,12 @@ export class MapComponent implements OnInit {
   }
 
   onSubmitClick(){
-    if(this.game.currentGuess == undefined || this.game.isCurrentMapFinnished()) return;
-    const guess = {lat: this.game.currentGuess.position.lat(), lng: this.game.currentGuess.position.lng()};
+    if(this.googleMaps.currentGuess == undefined || this.game.isCurrentMapFinnished()) return;
+    const guess = {lat: this.googleMaps.currentGuess.position.lat(), lng: this.googleMaps.currentGuess.position.lng()};
     this.game.currentMap.guess = guess;
     this.stopTimer();
     this.game.setScore(guess);
-    this.game.addMarkers();
+    this.googleMaps.addMarkers(this.game.currentMap);
   }
 
   onPrevClick(){
@@ -134,19 +135,19 @@ export class MapComponent implements OnInit {
   mapChange(){
     if(this.game.isCurrentMapFinnished()){
       this.scoreBoardExpanded = true; 
-      this.game.addMarkers();
+      this.googleMaps.addMarkers(this.game.currentMap);
     }
     else{
       this.scoreBoardExpanded = false;
-      this.game.reset();
+      this.googleMaps.reset();
       this.showDialog();
     }
     
   }
 
   onTimeEnd(){
-    if(this.game.currentGuess != undefined){
-      const guess = {lat: this.game.currentGuess.position.lat(), lng: this.game.currentGuess.position.lng()};
+    if(this.googleMaps.currentGuess != undefined){
+      const guess = {lat: this.googleMaps.currentGuess.position.lat(), lng: this.googleMaps.currentGuess.position.lng()};
       this.game.currentMap.guess = guess;
       this.game.setScore(guess);
     }
@@ -155,6 +156,6 @@ export class MapComponent implements OnInit {
       this.game.setScore(null);
     }
 
-    this.game.addMarkers();
+    this.googleMaps.addMarkers(this.game.currentMap);
   }
 }

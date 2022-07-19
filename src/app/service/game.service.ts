@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Map } from '../utils/map';
 import { Region, regions } from '../utils/region';
+import { GoogleMapService } from './google-map.service';
 import { MapLoaderService } from './map-loader.service';
 import { RandomStreetviewService } from './random-streetview.service';
 import { StreetViewService } from './street-view.service';
@@ -12,14 +13,10 @@ export class GameService {
     region: Region,
     timer: number,
   }
-  panorama: any;
-  map: any;
-  currentGuess: any = null;
-  drawings: any[] = [];
   maps: Map[] = [];
   currentMap: Map = this.maps[0];
 
-  constructor(private streetView: StreetViewService, private randomStreetView: RandomStreetviewService, private mapLoader: MapLoaderService ) {
+  constructor(private googleMaps: GoogleMapService, private streetView: StreetViewService, private randomStreetView: RandomStreetviewService, private mapLoader: MapLoaderService ) {
     this.params = {
       seed: '',
       region: regions[0],
@@ -40,7 +37,7 @@ export class GameService {
     if(currIndex === 0) return;
     this.currentMap = this.maps[currIndex-1];
     this.streetView.setPanoramaPosition(this.currentMap.answer);
-    this.removeDrawings();
+    this.googleMaps.removeDrawings();
    }
 
    async setToNextMap(){
@@ -48,7 +45,7 @@ export class GameService {
     if(currIndex === this.maps.length-1) await this.generateMap();
     else this.currentMap = this.maps[currIndex+1];
     this.streetView.setPanoramaPosition(this.currentMap.answer);
-    this.removeDrawings();
+    this.googleMaps.removeDrawings();
    }
 
    setParameters(seed: string, region = this.params.region, timer = this.params.timer){
@@ -57,7 +54,7 @@ export class GameService {
     this.params.timer = timer;
    }
 
-   async generateMap(){
+  async generateMap(){
     this.randomStreetView.setParameters({
       border: this.params.region.border,
       seed: this.params.seed + this.maps.indexOf(this.currentMap),
@@ -67,81 +64,6 @@ export class GameService {
     const index = (this.maps.length+1).toString()
     this.currentMap = new Map(index, index, location[0], location[1]);
     this.maps.push(this.currentMap);
-   }
-
-  async setMap(mapElement: any){
-    await this.mapLoader.load();
-    this.map = new this.mapLoader.google.maps.Map(mapElement.nativeElement, {
-      center: new this.mapLoader.google.maps.LatLng(0, 0),
-      zoom: 2,
-      clickableIcons: false
-    })
-
-    this.map.addListener("click", (e:any) => {
-      if(this.currentMap.score != null) return;
-      if(this.currentGuess != null) {
-        this.currentGuess.setMap(null);
-        this.currentGuess = null;
-      }
-      const latLng = {lat: e.latLng.lat(), lng: e.latLng.lng()};
-      this.currentGuess = new this.mapLoader.google.maps.Marker({
-        position: latLng,
-        map: this.map,
-        label: {text: "?", color: "white"}
-      })
-    })
-  }
-
-  
-  addMarkers(){
-    if(this.currentMap.guess == null && this.currentMap.score == null) return;
-    const to = new this.mapLoader.google.maps.Marker({
-      position: this.currentMap.answer,
-      map: this.map,
-      label: {text: "!", color: 'yellow'}
-    })
-    this.drawings.push(to);
-    this.setCenter(this.currentMap.answer);
-    if(this.currentMap.guess != null){
-      const from = new this.mapLoader.google.maps.Marker({
-        position: this.currentMap.guess,
-        map: this.map,
-        label: {text: "?", color: 'white'}
-      })
-      const polyline = new this.mapLoader.google.maps.Polyline({
-        strokeColor: "#ffcc66",
-        strokeOpacity: .5,
-        strokeWeight: 2,
-        map: this.map,
-        path: [from.getPosition(), to.getPosition()]
-      })
-      this.drawings.push(from)
-      this.drawings.push(polyline)
-    }
-  }
-
-  reset(){
-    this.removeDrawings();
-    if(this.map != undefined){
-      this.map.setCenter(new this.mapLoader.google.maps.LatLng(0, 0));
-      this.map.setZoom(2);
-    }
-  }
-
-  removeDrawings(){
-    while(this.drawings.length > 0){
-      let drawing = this.drawings.pop();
-      drawing.setMap(null);
-      drawing = null;
-    }
-    if(this.currentGuess != undefined){
-      this.currentGuess.setMap(null);
-      this.currentGuess = null;
-    }
-  }
-
-  setCenter(latLng: {lat: number | null, lng: number | null}){
-     this.map.setCenter(new this.mapLoader.google.maps.LatLng(latLng));
   }
 
   setScore(guess: {lat: number, lng: number} | null){
