@@ -23,7 +23,7 @@ export class MapComponent {
   getStreetViewStyle(){
     return {
       'width': '92vw', 
-      'height': this.settings.started?'95vh':'0px',
+      'height': '95vh',
     }
   }
 
