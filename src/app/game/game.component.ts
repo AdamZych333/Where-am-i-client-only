@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '../service/game.service';
-import { SettingsService } from '../service/settings.service';
 import { Region, regions } from '../utils/region';
 
 @Component({
@@ -23,7 +22,7 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams
       .subscribe(params => {
-        if(params['s'] === undefined) {
+        if(params['s'] === undefined || params['s'].length === 0) {
           this.router.navigate(['']);
           return;
         }

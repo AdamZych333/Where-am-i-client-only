@@ -5,7 +5,7 @@
         class="score-board {{mapsService.scoreBoardExpanded? 'expanded': ''}}"
         (click)="onScoreBoardClick()">
     <p>Time left: {{getTimerValue().minutes}} minutes {{getTimerValue().seconds}} seconds</p>
-    <p>Score: {{settings.selectedMap.score == null? 0: settings.selectedMap.score}}</p>
+    <p>Score: 0</p>
     </button>
     <div [style.display]="mapsService.scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">
         <app-google-maps [style]="getMapStyle()"></app-google-maps>

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MapLoaderService } from './map-loader.service';
 import { RandomStreetviewService } from './random-streetview.service';
 import { Map } from '../utils/map';
-import { SettingsService } from './settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,7 @@ import { SettingsService } from './settings.service';
 export class MapService {
   scoreBoardExpanded: boolean = false;
   
-  constructor(private settings: SettingsService, private mapLoader: MapLoaderService, private randomStreetView: RandomStreetviewService) {}
+  constructor(private mapLoader: MapLoaderService, private randomStreetView: RandomStreetviewService) {}
 
   async getCoordinates(map: Map){
   //   let seed = this.settings.getCurrentGenerationSeed(map);

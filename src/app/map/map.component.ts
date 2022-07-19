@@ -3,7 +3,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { GameService } from '../service/game.service';
 import { GoogleMapService } from '../service/google-map.service';
 import { MapService } from '../service/map.service';
-import { SettingsService } from '../service/settings.service';
 import { Region, regions } from '../utils/region';
 
 @Component({
@@ -20,7 +19,7 @@ export class MapComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(private game: GameService, public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService) {
+  constructor(private game: GameService, public mapsService: MapService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService) {
     this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
@@ -72,15 +71,15 @@ export class MapComponent implements OnInit {
   }
 
   onSubmitClick(){
-    const marker = this.googleMaps.guess;
-    if(marker == undefined || this.settings.selectedMap.score != null) return;
-    const guess = {lat: marker.position.lat(), lng: marker.position.lng()};
-    this.settings.selectedMap.guess = guess;
-    this.mapsService.setScore(guess, this.settings.selectedMap);
-    this.googleMaps.addMarkers();
+    // const marker = this.googleMaps.guess;
+    // if(marker == undefined || this.settings.selectedMap.score != null) return;
+    // const guess = {lat: marker.position.lat(), lng: marker.position.lng()};
+    // this.settings.selectedMap.guess = guess;
+    // this.mapsService.setScore(guess, this.settings.selectedMap);
+    // this.googleMaps.addMarkers();
   }
 
   displayComponent(){
-    return this.settings.started? 'visible': 'hidden'
+    // return this.settings.started? 'visible': 'hidden'
   }
 }

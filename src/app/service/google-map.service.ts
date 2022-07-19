@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MapLoaderService } from './map-loader.service';
 import { MapService } from './map.service';
-import { SettingsService } from './settings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,29 +12,29 @@ export class GoogleMapService {
   guess: any;
   drawings: any[] = [];
 
-  constructor(private settings: SettingsService, private loadMaps: MapLoaderService) { }
+  constructor(private loadMaps: MapLoaderService) { }
 
   async setMap(mapElement: any){
-    await this.loadMaps.load();
-    this.map = new this.loadMaps.google.maps.Map(mapElement.nativeElement, {
-      center: new this.loadMaps.google.maps.LatLng(this.defaultLatLng.lat, this.defaultLatLng.lng),
-      zoom: this.defaultZoom,
-      clickableIcons: false
-    })
+    // await this.loadMaps.load();
+    // this.map = new this.loadMaps.google.maps.Map(mapElement.nativeElement, {
+    //   center: new this.loadMaps.google.maps.LatLng(this.defaultLatLng.lat, this.defaultLatLng.lng),
+    //   zoom: this.defaultZoom,
+    //   clickableIcons: false
+    // })
 
-    this.map.addListener("click", (e:any) => {
-      if(this.settings.selectedMap.score != null) return;
-      if(this.guess != undefined) {
-        this.guess.setMap(null);
-        this.guess = null;
-      }
-      const latLng = {lat: e.latLng.lat(), lng: e.latLng.lng()};
-      this.guess = new this.loadMaps.google.maps.Marker({
-        position: latLng,
-        map: this.map,
-        label: {text: "?", color: "white"}
-      })
-    })
+    // this.map.addListener("click", (e:any) => {
+    //   if(this.settings.selectedMap.score != null) return;
+    //   if(this.guess != undefined) {
+    //     this.guess.setMap(null);
+    //     this.guess = null;
+    //   }
+    //   const latLng = {lat: e.latLng.lat(), lng: e.latLng.lng()};
+    //   this.guess = new this.loadMaps.google.maps.Marker({
+    //     position: latLng,
+    //     map: this.map,
+    //     label: {text: "?", color: "white"}
+    //   })
+    // })
   }
 
   addMarkers(){
