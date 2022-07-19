@@ -4,7 +4,7 @@
         matTooltip="Click to open/close map."
         class="score-board {{mapsService.scoreBoardExpanded? 'expanded': ''}}"
         (click)="onScoreBoardClick()">
-    <p>Time left: {{settings.timerValue}} seconds</p>
+    <p>Time left: {{getTimerValue().minutes}} minutes {{getTimerValue().seconds}} seconds</p>
     <p>Score: {{settings.selectedMap.score == null? 0: settings.selectedMap.score}}</p>
     </button>
     <div [style.display]="mapsService.scoreBoardExpanded? 'flex': 'none'" class="expanded-score-board">

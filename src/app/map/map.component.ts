@@ -12,9 +12,8 @@ import { Region, regions } from '../utils/region';
   styleUrls: ['./map.component.sass']
 })
 export class MapComponent implements OnInit {
-  @Input() seed: string;
-  @Input() region: Region;
-  @Input() timer: number;
+  timeLeft: number;
+  timer: any;
 
   @HostBinding("attr.style")
   public get panoramaWidth(): any {
@@ -22,12 +21,10 @@ export class MapComponent implements OnInit {
   }
 
   constructor(private game: GameService, public mapsService: MapService, public settings: SettingsService, private sanitizer: DomSanitizer, private googleMaps: GoogleMapService) {
-    this.seed = game.params.seed;
-    this.region = game.params.region;
-    this.timer = game.params.timer;
+    this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
-    this.game.setParameters(this.seed, this.region, this.timer);
+    this.startTimer();
   }
 
   getStreetViewStyle(){
@@ -42,6 +39,28 @@ export class MapComponent implements OnInit {
       'width': 'calc(46vw - 30px)',
       'height': '400px'
     }
+  }
+
+  getTimerValue(){
+    return {minutes: Math.floor(this.timeLeft/60), seconds: this.timeLeft%60};
+  }
+
+  startTimer(){
+    if(this.timeLeft === 0) return;
+    this.timer = setTimeout(() => {
+      this.timeLeft--;
+      this.startTimer();
+    }, 1000);
+  }
+
+  stopTimer(){
+    if(this.timer != undefined)
+      clearTimeout(this.timer);
+  }
+
+  resetTimer(){
+    this.stopTimer()
+    this.timeLeft = this.game.params.timer;
   }
 
   onResetClick(){

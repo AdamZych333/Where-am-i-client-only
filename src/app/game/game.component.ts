@@ -15,7 +15,7 @@ export class GameComponent implements OnInit {
   region: Region;
   timer: number;
 
-  constructor(gameService: GameService, private route: ActivatedRoute, private router: Router) {
+  constructor(private gameService: GameService, private route: ActivatedRoute, private router: Router) {
     this.region = gameService.params.region;
     this.timer = gameService.params.timer;
    }
@@ -36,6 +36,8 @@ export class GameComponent implements OnInit {
           this.timer = params['t'];
         }
       })
+      
+    this.gameService.setParameters(this.gameSeed, this.region, this.timer);
   }
 
   getShowMap(){
