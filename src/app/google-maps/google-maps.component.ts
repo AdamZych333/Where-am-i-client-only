@@ -14,6 +14,6 @@ export class GoogleMapsComponent {
   constructor(private game: GameService, private googleMap: GoogleMapService) { }
 
   ngAfterViewInit(): void {
-    if(this.containerElement != null) this.googleMap.setMap(this.containerElement, this.game.currentMap);
+    if(this.containerElement != null) this.googleMap.setMap(this.containerElement);
   }
 }

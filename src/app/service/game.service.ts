@@ -73,19 +73,26 @@ export class GameService {
     }
     
     const distance = this.calculateScore(guess.lat, guess.lng, this.currentMap.answer.lat, this.currentMap.answer.lng);
-    // 1pkt per 6km in a distance of 12000km
-    const baseScore = Math.max(2000 - Math.round(distance/5500), 0);
-    // 1pkt per 3km in a distance of 4500km
-    const bonus1 = Math.max(1500 - Math.round(distance/3000), 0);
-    // 1pkt per 800m in a distance of 800km
-    const bonus2 = Math.max(1000 - Math.round(distance/800), 0);
-    // 1pkt per 200m in a distance of 68km
-    const bonus3 = Math.max(340 - Math.round(distance/200), 0);
-    // 1pkt per 5m in a distance of 1200m
-    const bonus4 = Math.max(120 - Math.round(distance/10), 0);
-    // 1pkt per 1m in a distance of 40m
-    const bonus5 = Math.max(40 - Math.round(distance), 0);
-    this.currentMap.score = baseScore + bonus1 + bonus2 + bonus3 + bonus4 + bonus5;
+    // 1pkt per 11km in a distance of 11000km
+    const baseScore = Math.max(1000 - Math.round(distance/11000), 0);
+    
+    const bonuses = [
+      // 1pkt per 2.5km in a distance of 5000km
+      Math.max(2000- Math.round(distance/2500), 0),
+      // 1pkt per 1km in a distance of 2000km
+      Math.max(1000 - Math.round(distance/2000), 0),
+      // 1pkt per 1km in a distance of 700km
+      Math.max(700 - Math.round(distance/1000), 0),
+      // 1pkt per 1km in a distance of 160km
+      Math.max(180 - Math.round(distance/800), 0),
+      // 1pkt per 1km in a distance of 7km
+      Math.max(80 - Math.round(distance/100), 0),
+      // 1pkt per 10m in a distance of 300m
+      Math.max(30 - Math.round(distance/10), 0),
+      // 1pkt per 1m in a distance of 10m
+      Math.max(10 - Math.round(distance), 0),
+    ]
+    this.currentMap.score = baseScore + bonuses.reduce((a, b) => a + b, 0);
   }
 
   private calculateScore(guessLat:number, guessLng:number, answerLat:number, answerLng:number){

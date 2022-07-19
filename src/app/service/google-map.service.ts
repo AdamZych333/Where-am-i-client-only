@@ -12,7 +12,7 @@ export class GoogleMapService {
 
   constructor(private mapLoader: MapLoaderService) { }
 
-  async setMap(mapElement: any, currMap: Map){
+  async setMap(mapElement: any){
     await this.mapLoader.load();
     this.map = new this.mapLoader.google.maps.Map(mapElement.nativeElement, {
       center: new this.mapLoader.google.maps.LatLng(0, 0),
