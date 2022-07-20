@@ -1,43 +1,42 @@
 $panorama-width: var(--panorama-width)
-
-.score-board
-    min-width: 0
-    height: 50px
-    margin-left: 5px
+.scores
+    width: calc($panorama-width/2)
     position: absolute
-    bottom: 821px
     z-index: 3
+    margin-top: 3px
 
-    ::ng-deep .mat-button-wrapper
+    .score-board
+        min-width: 0
+        height: 50px
+        margin-left: 5px
+
+        ::ng-deep .mat-button-wrapper
+            display: flex
+            flex-direction: row
+            justify-content: space-around
+            align-items: center
+
+            > p
+                margin: 0 15px
+    .expanded
+        width: calc($panorama-width/2)
+
+    .expanded-score-board
+        width: calc($panorama-width/2)
+        background-color: white
+        margin: 0 5px
+        border-radius: 0 0 3px 3px
         display: flex
-        flex-direction: row
-        justify-content: space-around
+        flex-direction: column
         align-items: center
 
-        > p
-            margin: 0 15px
-.expanded
-    width: calc($panorama-width/2)
-
-.expanded-score-board
-    position: absolute
-    bottom: 372px
-    z-index: 3
-    width: calc($panorama-width/2)
-    background-color: white
-    margin: 0 5px
-    border-radius: 0 0 3px 3px
-    display: flex
-    flex-direction: column
-    align-items: center
-
-    .submit-btn
-        width: 100px
-        margin: 7px 0
-    
-    .buttons
-        width: 100%
-        display: flex
-        flex-direction: row
-        justify-content: space-around
+        .submit-btn
+            width: 100px
+            margin: 7px 0
+        
+        .buttons
+            width: 100%
+            display: flex
+            flex-direction: row
+            justify-content: space-around
 

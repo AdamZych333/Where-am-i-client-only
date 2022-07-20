@@ -30,8 +30,12 @@ export class GameService {
     }
    }
 
-   isCurrentMapFinnished(){
-    return this.currentMap != undefined && this.currentMap.score != null;
+   isMapFinnished(map: Map){
+    return map != undefined && map.score != null;
+   }
+
+   getFinnishedMaps(){
+    return this.maps.filter(e => this.isMapFinnished(e));
    }
 
    resetSVPosition(){

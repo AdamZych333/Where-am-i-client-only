@@ -1,0 +1,19 @@
+@import '~@angular/material/theming'
+$myPrimaryPaletteVariable : mat-palette($mat-deep-purple)
+$myPrimaryColor : mat-color($myPrimaryPaletteVariable)
+
+:host
+    display: flex
+    justify-content: space-around
+    width: 80%
+    margin: 20px 0
+
+    .stats
+        text-align: center
+
+        h1
+            color: $myPrimaryColor
+    
+        p
+            font-size: 40px
+        

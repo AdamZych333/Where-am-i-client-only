@@ -33,6 +33,10 @@ export class MenuComponent implements OnInit {
     return this.returnValue.time;
   }
 
+  getMapNumber(){
+    return this.data.mapNumber;
+  }
+
   changeTime(newTime: number){
     this.returnValue.time = newTime;
   }

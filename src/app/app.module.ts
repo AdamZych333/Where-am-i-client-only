@@ -20,6 +20,7 @@ import { StreetViewComponent } from './street-view/street-view.component';
 import { TimePickerComponent } from './time-picker/time-picker.component';
 import { GameComponent } from './game/game.component';
 import { MenuComponent } from './menu/menu.component';
+import { StatsComponent } from './stats/stats.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MenuComponent } from './menu/menu.component';
     StreetViewComponent,
     TimePickerComponent,
     GameComponent,
-    MenuComponent
+    MenuComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,

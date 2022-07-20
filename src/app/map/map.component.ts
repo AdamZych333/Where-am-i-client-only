@@ -30,7 +30,7 @@ export class MapComponent implements OnInit {
   }
 
   afterSvInit(){
-    if(this.game.isCurrentMapFinnished()){
+    if(this.game.isMapFinnished(this.game.currentMap)){
       this.scoreBoardExpanded = true;
       return;
     }
@@ -57,7 +57,8 @@ export class MapComponent implements OnInit {
     const dialogRef = this.dialog.open(MenuComponent, {
       data: {
         title: this.game.params.region.viewValue,
-        time: this.game.params.timer
+        time: this.game.params.timer,
+        mapNumber: this.game.maps.indexOf(this.game.currentMap)+1,
       },
       disableClose: true
     });
@@ -83,12 +84,12 @@ export class MapComponent implements OnInit {
   }
 
   getIsGameFinnished(){
-    return this.game.isCurrentMapFinnished();
+    return this.game.isMapFinnished(this.game.currentMap);
   }
 
   getTimerValue(){
     if(this.game.currentMap != undefined && this.game.currentMap.guess != null) return {minutes: Math.floor(this.game.currentMap.guess.timeLeft/60), seconds: this.game.currentMap.guess.timeLeft%60};
-    if(this.game.isCurrentMapFinnished()) return {minutes: 0, seconds: 0};
+    if(this.game.isMapFinnished(this.game.currentMap)) return {minutes: 0, seconds: 0};
     return {minutes: Math.floor(this.timeLeft/60), seconds: this.timeLeft%60};
   }
 
@@ -124,7 +125,7 @@ export class MapComponent implements OnInit {
   }
 
   onSubmitClick(){
-    if(this.googleMaps.currentGuess == undefined || this.game.isCurrentMapFinnished()) return;
+    if(this.googleMaps.currentGuess == undefined || this.game.isMapFinnished(this.game.currentMap)) return;
     const guess = {
       lat: this.googleMaps.currentGuess.position.lat(), 
       lng: this.googleMaps.currentGuess.position.lng(),
@@ -147,7 +148,7 @@ export class MapComponent implements OnInit {
   }
 
   mapChange(){
-    if(this.game.isCurrentMapFinnished()){
+    if(this.game.isMapFinnished(this.game.currentMap)){
       this.scoreBoardExpanded = true;
       this.streetView.makeVisible();
       this.googleMaps.addMarkers(this.game.currentMap);
