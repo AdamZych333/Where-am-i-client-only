@@ -13,10 +13,16 @@ export class GameComponent implements OnInit {
   gameSeed: string = '';
   region: Region;
   timer: number;
+  noZoom: boolean;
+  noMoving: boolean;
+  noRotation: boolean;
 
   constructor(private gameService: GameService, private route: ActivatedRoute, private router: Router) {
     this.region = gameService.params.region;
     this.timer = gameService.params.timer;
+    this.noMoving = gameService.params.noMoving;
+    this.noRotation = gameService.params.noRotation;
+    this.noZoom = gameService.params.noZoom;
    }
 
   ngOnInit(): void {
@@ -27,16 +33,26 @@ export class GameComponent implements OnInit {
           return;
         }
         this.gameSeed = params['s'];
-        const r = regions.find(e => e.value === params['r']);
-        if(params['r'] !== undefined && r !== undefined){
+        const r = regions.find(e => e.value === params['b']);
+        if(r !== undefined){
           this.region = r;
         }
         if(params['t'] !== undefined){
           this.timer = params['t'];
         }
-      })
-      
-    this.gameService.setParameters(this.gameSeed, this.region, this.timer);
+        if(params['z'] !== undefined){
+          this.noZoom = params['z'] == 'true';
+        }
+        if(params['m'] !== undefined){
+          this.noMoving = params['m'] == 'true';
+        }
+        if(params['r'] !== undefined){
+          this.noRotation = params['r'] == 'true';
+        }
+      }
+    )
+
+    this.gameService.setParameters(this.gameSeed, this.region, this.timer, this.noZoom, this.noMoving, this.noRotation);
   }
 
   getShowMap(){

@@ -1,4 +1,5 @@
-import { Component} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
+import { MatCheckbox } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { Region, regions } from '../utils/region';
 
@@ -11,6 +12,9 @@ export class SettingsComponent{
   seedLength = 15;
   timerValue: number = 180;
   selectedRegion: Region;
+  noZoom: boolean = false;
+  noMoving: boolean = false;
+  noRotation: boolean = false;
 
   constructor(private router: Router) {
     this.selectedRegion = regions[0];
@@ -25,9 +29,18 @@ export class SettingsComponent{
       queryParams: {
         s: this.generateSeed(this.seedLength),
         t: this.timerValue,
-        r: this.selectedRegion.value
+        b: this.selectedRegion.value,
+        z: this.noZoom,
+        m: this.noMoving,
+        r: this.noRotation,
       }
     });
+  }
+
+  onRotationChange(event: any){
+    if(event.checked){
+      this.noMoving = true;
+    }
   }
 
   changeTime(newValue: number){
@@ -42,7 +55,6 @@ export class SettingsComponent{
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
 
-    console.log(result)
     return result;
   }
 }

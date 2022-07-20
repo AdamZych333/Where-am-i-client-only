@@ -14,8 +14,21 @@ export class StreetViewComponent {
   constructor(private game: GameService, private streetView: StreetViewService) { }
 
   ngAfterViewInit(): void {
+    
     this.game.generateMap().then(() => {
-      if(this.containerElement != null) this.streetView.setStreetView(this.containerElement, this.game.currentMap.answer);
+      if(this.containerElement != null) this.streetView.setStreetView(
+        this.containerElement, 
+        this.game.currentMap.answer,
+        {
+          rotation: !this.game.params.noRotation,
+          zooming: !this.game.params.noZoom,
+          moving: !this.game.params.noMoving,
+        }
+        );
     })
+  }
+
+  getRotation(){
+    return this.game.params.noRotation? 'none': '';
   }
 }

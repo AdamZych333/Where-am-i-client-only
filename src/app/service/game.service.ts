@@ -12,6 +12,9 @@ export class GameService {
     seed: string,
     region: Region,
     timer: number,
+    noZoom: boolean,
+    noMoving: boolean,
+    noRotation: boolean,
   }
   maps: Map[] = [];
   currentMap: Map = this.maps[0];
@@ -21,6 +24,9 @@ export class GameService {
       seed: '',
       region: regions[0],
       timer: 180,
+      noZoom: false,
+      noMoving: false,
+      noRotation: false,
     }
    }
 
@@ -48,10 +54,13 @@ export class GameService {
     this.googleMaps.removeDrawings();
    }
 
-   setParameters(seed: string, region = this.params.region, timer = this.params.timer){
+   setParameters(seed: string, region = this.params.region, timer = this.params.timer, noZoom = this.params.noZoom, noMoving = this.params.noMoving, noRotation = this.params.noRotation){
     this.params.seed = seed;
     this.params.region = region;
     this.params.timer = timer;
+    this.params.noZoom = noZoom;
+    this.params.noMoving = noMoving;
+    this.params.noRotation = noRotation;
    }
 
   async generateMap(){
