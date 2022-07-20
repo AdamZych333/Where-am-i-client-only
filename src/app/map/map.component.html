@@ -37,6 +37,6 @@
             </div>
         </ng-template>
     </div>
-    <app-street-view [style]="getStreetViewStyle()"></app-street-view>
+    <app-street-view (afterInit)="afterSvInit()" [style]="getStreetViewStyle()"></app-street-view>
 </div>
 

@@ -26,6 +26,10 @@ export class MapComponent implements OnInit {
     this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
+    
+  }
+
+  afterSvInit(){
     if(this.game.isCurrentMapFinnished()){
       this.scoreBoardExpanded = true;
       return;

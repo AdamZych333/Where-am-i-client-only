@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { MatButton } from '@angular/material/button';
 import { GameService } from '../service/game.service';
 import { StreetViewService } from '../service/street-view.service';
@@ -11,7 +11,8 @@ import { StreetViewService } from '../service/street-view.service';
 export class StreetViewComponent {
   @ViewChild('container') containerElement: HTMLElement | null = null;
   @ViewChild('resetBtn') resetBtnElement: MatButton | null = null;
-  @Input() style = {}
+  @Input() style = {};
+  @Output() afterInit = new EventEmitter<void>();
   
   constructor(private game: GameService, private streetView: StreetViewService) { }
 
@@ -30,6 +31,7 @@ export class StreetViewComponent {
         }
         );
     })
+    this.afterInit.emit();
   }
 
   getRotation(){
