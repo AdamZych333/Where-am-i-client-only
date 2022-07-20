@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MenuComponent } from '../menu/menu.component';
 import { GameService } from '../service/game.service';
 import { GoogleMapService } from '../service/google-map.service';
+import { StreetViewService } from '../service/street-view.service';
 
 @Component({
   selector: 'app-map',
@@ -20,7 +21,7 @@ export class MapComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustStyle(`--panorama-width: ${this.getStreetViewStyle().width}`);
   }
 
-  constructor(private googleMaps: GoogleMapService, private dialog: MatDialog, private game: GameService, private sanitizer: DomSanitizer) {
+  constructor(private streetView: StreetViewService, private googleMaps: GoogleMapService, private dialog: MatDialog, private game: GameService, private sanitizer: DomSanitizer) {
     this.timeLeft = game.params.timer;
   }
   ngOnInit(): void {
@@ -46,6 +47,7 @@ export class MapComponent implements OnInit {
   }
 
   showDialog(){
+    this.streetView.makeNotVisible();
     const dialogRef = this.dialog.open(MenuComponent, {
       data: {
         title: this.game.params.region.viewValue,
@@ -67,6 +69,7 @@ export class MapComponent implements OnInit {
       this.game.params.timer = result.time;
       this.timeLeft = result.time;
       document.documentElement.scrollTop = document.documentElement.scrollHeight;
+      this.streetView.makeVisible();
       if(this.timeLeft == 0) return;
         this.startTimer();
     })
@@ -132,7 +135,8 @@ export class MapComponent implements OnInit {
 
   mapChange(){
     if(this.game.isCurrentMapFinnished()){
-      this.scoreBoardExpanded = true; 
+      this.scoreBoardExpanded = true;
+      this.streetView.makeVisible();
       this.googleMaps.addMarkers(this.game.currentMap);
     }
     else{

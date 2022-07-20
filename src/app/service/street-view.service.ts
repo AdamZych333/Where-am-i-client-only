@@ -23,7 +23,8 @@ export class StreetViewService {
       scrollwheel: settings.zooming,
       panControl: settings.rotation,
       linksControl: settings.moving,
-      clickToGo: settings.moving
+      clickToGo: settings.moving,
+      visible: false
     })
 
     const controlDiv = document.createElement('div');
@@ -33,6 +34,14 @@ export class StreetViewService {
 
   setPanoramaPosition(position: {lat: number, lng: number}){
     this.panorama.setPosition(position);
+  }
+
+  makeVisible(){
+    if(this.panorama != undefined) this.panorama.setVisible(true);
+  }
+
+  makeNotVisible(){
+    if(this.panorama != undefined) this.panorama.setVisible(false);
   }
 
   // private addResetBtn(action: () => void){
