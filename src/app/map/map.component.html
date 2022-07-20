@@ -1,5 +1,6 @@
 <div class="game">
     <button mat-flat-button
+        [style.display]="showScoreBoard? '': 'none'"
         color="primary"
         matTooltip="Click to open/close map."
         class="score-board {{scoreBoardExpanded? 'expanded': ''}}"

@@ -15,6 +15,7 @@ export class MapComponent implements OnInit {
   timeLeft: number;
   timer: any;
   scoreBoardExpanded = false;
+  showScoreBoard = false;
 
   @HostBinding("attr.style")
   public get panoramaWidth(): any {
@@ -48,6 +49,7 @@ export class MapComponent implements OnInit {
 
   showDialog(){
     this.streetView.makeNotVisible();
+    this.showScoreBoard = false;
     const dialogRef = this.dialog.open(MenuComponent, {
       data: {
         title: this.game.params.region.viewValue,
@@ -70,6 +72,7 @@ export class MapComponent implements OnInit {
       this.timeLeft = result.time;
       document.documentElement.scrollTop = document.documentElement.scrollHeight;
       this.streetView.makeVisible();
+      this.showScoreBoard = true;
       if(this.timeLeft == 0) return;
         this.startTimer();
     })
@@ -80,6 +83,8 @@ export class MapComponent implements OnInit {
   }
 
   getTimerValue(){
+    if(this.game.currentMap != undefined && this.game.currentMap.guess != null) return {minutes: Math.floor(this.game.currentMap.guess.timeLeft/60), seconds: this.game.currentMap.guess.timeLeft%60};
+    if(this.game.isCurrentMapFinnished()) return {minutes: 0, seconds: 0};
     return {minutes: Math.floor(this.timeLeft/60), seconds: this.timeLeft%60};
   }
 
@@ -116,7 +121,11 @@ export class MapComponent implements OnInit {
 
   onSubmitClick(){
     if(this.googleMaps.currentGuess == undefined || this.game.isCurrentMapFinnished()) return;
-    const guess = {lat: this.googleMaps.currentGuess.position.lat(), lng: this.googleMaps.currentGuess.position.lng()};
+    const guess = {
+      lat: this.googleMaps.currentGuess.position.lat(), 
+      lng: this.googleMaps.currentGuess.position.lng(),
+      timeLeft: this.timeLeft,
+    };
     this.game.currentMap.guess = guess;
     this.stopTimer();
     this.game.setScore(guess);
@@ -149,7 +158,11 @@ export class MapComponent implements OnInit {
 
   onTimeEnd(){
     if(this.googleMaps.currentGuess != undefined){
-      const guess = {lat: this.googleMaps.currentGuess.position.lat(), lng: this.googleMaps.currentGuess.position.lng()};
+      const guess = {
+        lat: this.googleMaps.currentGuess.position.lat(), 
+        lng: this.googleMaps.currentGuess.position.lng(),
+        timeLeft: this.timeLeft,
+      };
       this.game.currentMap.guess = guess;
       this.game.setScore(guess);
     }
