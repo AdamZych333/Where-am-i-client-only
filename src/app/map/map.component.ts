@@ -29,7 +29,6 @@ export class MapComponent implements OnInit {
       return;
     }
     this.showDialog();
-
   }
 
   getStreetViewStyle(){
@@ -67,6 +66,7 @@ export class MapComponent implements OnInit {
       }
       this.game.params.timer = result.time;
       this.timeLeft = result.time;
+      document.documentElement.scrollTop = document.documentElement.scrollHeight;
       if(this.timeLeft == 0) return;
         this.startTimer();
     })
