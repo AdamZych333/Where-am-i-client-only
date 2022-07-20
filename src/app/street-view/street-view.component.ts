@@ -30,8 +30,8 @@ export class StreetViewComponent {
           moving: !this.game.params.noMoving,
         }
         );
+        this.afterInit.emit();
     })
-    this.afterInit.emit();
   }
 
   getRotation(){
