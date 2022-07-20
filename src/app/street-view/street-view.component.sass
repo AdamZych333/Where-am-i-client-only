@@ -2,6 +2,7 @@
     $rotation: var(--rotation)
     border: 1px black solid
     z-index: 1
+    margin-bottom: 30px
 
     ::ng-deep 
         > :nth-child(1)
@@ -19,3 +20,19 @@
                 
         > :nth-child(2)
             display: none
+
+.reset-btn
+    $btn-width: 50px
+    $btn-height: 50px
+    width: $btn-width
+    height: $btn-height
+    min-width: 0
+    background-color: hsla(0, 0%, 15%, 1)
+    color: hsla(0, 0%, 80%, 1)
+    z-index: 2
+    text-align: center
+    margin: 20px 9px
+    padding: 0 0 2px 0
+
+    .mat-icon
+        font-size: 25px

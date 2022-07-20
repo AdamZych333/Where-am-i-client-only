@@ -4,3 +4,10 @@
     class="container"
     >
 </div>
+<button #resetBtn
+        mat-stroked-button 
+        matTooltip="Reset to starting position."
+        class="reset-btn" 
+        (click)="onResetClick()">
+        <mat-icon>home</mat-icon>
+</button>

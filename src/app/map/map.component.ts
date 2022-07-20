@@ -107,10 +107,6 @@ export class MapComponent implements OnInit {
     this.timeLeft = this.game.params.timer;
   }
 
-  onResetClick(){
-    this.game.resetSVPosition();
-  }
-
   onScoreBoardClick(){
     this.scoreBoardExpanded = !this.scoreBoardExpanded;
   }
