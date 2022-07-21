@@ -1,2 +1,9 @@
 <h1><b>Region creator</b></h1>
 <div #map class="map"></div>
+<form>
+    <mat-form-field appearance="fill">
+        <mat-label>Region name</mat-label>
+        <input matInput placeholder="Ex. The world" [(ngModel)]="name" name="name">
+    </mat-form-field>
+</form>
+<button mat-flat-button color="accent" (click)="onSubmit()">Submit</button>
