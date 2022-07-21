@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatButton } from '@angular/material/button';
 import { MapLoaderService } from '../service/map-loader.service';
 
 @Component({
@@ -8,6 +9,7 @@ import { MapLoaderService } from '../service/map-loader.service';
 })
 export class CreateComponent implements OnInit {
   @ViewChild('map') mapElement: any = null;
+  @ViewChild('removeBtn') removeBtnElement: MatButton | null = null;
   polylines: any[] = [];
   name: string = '';
   map: any;
@@ -30,6 +32,7 @@ export class CreateComponent implements OnInit {
         });
 
         this.addDrawingManager();
+        this.addRemovePolylineBtn();
     });
   }
 
@@ -43,6 +46,21 @@ export class CreateComponent implements OnInit {
 
   polylinesToBorder(){
 
+  }
+
+  removeSelectedPolyline(){
+    if(this.selectedPolyline == null) return;
+    this.selectedPolyline.setMap(null);
+    this.polylines.filter(e => e != this.selectedPolyline);
+    this.selectedPolyline = null;
+  }
+
+  private async addRemovePolylineBtn(){
+    if(this.removeBtnElement == null) return;
+    this.removeBtnElement._elementRef.nativeElement.parentNode.removeChild(this.removeBtnElement?._elementRef.nativeElement);
+    const controlDiv = document.createElement('div');
+    controlDiv.appendChild(this.removeBtnElement._elementRef.nativeElement);
+    this.map.controls[this.mapLoader.google.maps.ControlPosition.TOP_CENTER].push(controlDiv);
   }
 
   private async addDrawingManager(){

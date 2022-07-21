@@ -1,5 +1,11 @@
 <h1><b>Region creator</b></h1>
 <div #map class="map"></div>
+<button #removeBtn
+        class="remove-btn"
+        mat-flat-button
+        (click)="removeSelectedPolyline()"
+        matTooltip="Click to remove selected border"
+        >X</button>
 <form>
     <mat-form-field appearance="fill">
         <mat-label>Region name</mat-label>
