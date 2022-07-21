@@ -49,6 +49,7 @@ export class CreateComponent implements OnInit {
       this.nameFormControl.markAsTouched();
       return;
     }
+    console.log(this.polylinesToBorder());
     this.regionService.addRegion(
       this.getValueFromName(),
       this.name,
