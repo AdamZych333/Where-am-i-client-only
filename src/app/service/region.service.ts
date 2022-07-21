@@ -14,7 +14,7 @@ export class RegionService {
     return this.regions;
   }
 
-  addREgion(value: string, viewValue: string, border: []){
+  addRegion(value: string, viewValue: string, border: any[]){
     console.log(`Added new region: ${border}`);
     this.regions.push(new Region(value, viewValue, border));
   }

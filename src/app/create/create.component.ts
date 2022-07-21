@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
+import { Router } from '@angular/router';
 import { MapLoaderService } from '../service/map-loader.service';
+import { RegionService } from '../service/region.service';
 
 @Component({
   selector: 'app-create',
@@ -14,8 +17,9 @@ export class CreateComponent implements OnInit {
   name: string = '';
   map: any;
   selectedPolyline: any = null;
+  nameFormControl = new FormControl('', [Validators.required]);
 
-  constructor(private mapLoader: MapLoaderService) { }
+  constructor(private router: Router, private regionService: RegionService, private mapLoader: MapLoaderService) { }
 
   ngOnInit(): void {
 
@@ -41,17 +45,28 @@ export class CreateComponent implements OnInit {
   }
 
   onSubmit(){
-    
+    if(this.nameFormControl.invalid){
+      this.nameFormControl.markAsTouched();
+      return;
+    }
+    this.regionService.addRegion(
+      this.getValueFromName(),
+      this.name,
+      this.polylinesToBorder(),
+    )
+    this.router.navigate(['/']);
   }
 
   polylinesToBorder(){
-
+    return this.polylines.map(e => e.getPath().getArray().map((latLng: any) => {
+      return [latLng.lat(), latLng.lng()];
+    }))
   }
 
   removeSelectedPolyline(){
     if(this.selectedPolyline == null) return;
+    this.polylines = this.polylines.filter(e => e != this.selectedPolyline);
     this.selectedPolyline.setMap(null);
-    this.polylines.filter(e => e != this.selectedPolyline);
     this.selectedPolyline = null;
   }
 

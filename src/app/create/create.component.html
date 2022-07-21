@@ -9,7 +9,10 @@
 <form>
     <mat-form-field appearance="fill">
         <mat-label>Region name</mat-label>
-        <input matInput placeholder="Ex. The world" [(ngModel)]="name" name="name">
+        <input matInput [formControl]="nameFormControl" placeholder="Ex. The World" required [(ngModel)]="name" name="name">
+        <mat-error *ngIf="nameFormControl.invalid">
+            Name is <strong>required</strong>
+        </mat-error>
     </mat-form-field>
 </form>
-<button mat-flat-button color="accent" (click)="onSubmit()">Submit</button>
+<button mat-flat-button color="accent" class="submit-btn" (click)="onSubmit()">Submit</button>

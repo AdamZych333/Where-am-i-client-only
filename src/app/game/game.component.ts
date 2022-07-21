@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '../service/game.service';
-import { Region, regions } from '../utils/region';
+import { RegionService } from '../service/region.service';
+import { Region } from '../utils/region';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.sass'],
-  providers: [GameService]
+  providers: [
+    GameService
+  ]
 })
 export class GameComponent implements OnInit {
   gameSeed: string = '';
@@ -17,7 +20,7 @@ export class GameComponent implements OnInit {
   noMoving: boolean;
   noRotation: boolean;
 
-  constructor(private gameService: GameService, private route: ActivatedRoute, private router: Router) {
+  constructor(private regionService: RegionService, private gameService: GameService, private route: ActivatedRoute, private router: Router) {
     this.region = gameService.params.region;
     this.timer = gameService.params.timer;
     this.noMoving = gameService.params.noMoving;
@@ -33,7 +36,7 @@ export class GameComponent implements OnInit {
           return;
         }
         this.gameSeed = params['s'];
-        const r = regions.find(e => e.value === params['b']);
+        const r = this.regionService.getRegions().find(e => e.value === params['b']);
         if(r !== undefined){
           this.region = r;
         }

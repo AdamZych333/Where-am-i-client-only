@@ -1,7 +1,7 @@
-import { Component, ViewChild} from '@angular/core';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { Component} from '@angular/core';
 import { Router } from '@angular/router';
-import { Region, regions } from '../utils/region';
+import { RegionService } from '../service/region.service';
+import { Region } from '../utils/region';
 
 @Component({
   selector: 'app-settings',
@@ -16,12 +16,12 @@ export class SettingsComponent{
   noMoving: boolean = false;
   noRotation: boolean = false;
 
-  constructor(private router: Router) {
-    this.selectedRegion = regions[0];
+  constructor(private regionService: RegionService, private router: Router) {
+    this.selectedRegion = regionService.getRegions()[0];
   }
 
   getRegions(){
-    return regions;
+    return this.regionService.getRegions();
   }
 
   onCreateClick(){
