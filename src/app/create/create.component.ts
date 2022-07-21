@@ -8,9 +8,11 @@ import { MapLoaderService } from '../service/map-loader.service';
 })
 export class CreateComponent implements OnInit {
   @ViewChild('map') mapElement: any = null;
-  border: [] = [];
+  polylines: any[] = [];
   name: string = '';
   map: any;
+  selectedPolyline: any = null;
+
   constructor(private mapLoader: MapLoaderService) { }
 
   ngOnInit(): void {
@@ -39,6 +41,10 @@ export class CreateComponent implements OnInit {
     
   }
 
+  polylinesToBorder(){
+
+  }
+
   private async addDrawingManager(){
     const google = await this.mapLoader.load();
     const drawingManager = new google.maps.drawing.DrawingManager({
@@ -55,5 +61,20 @@ export class CreateComponent implements OnInit {
     })
 
     drawingManager.setMap(this.map);
+
+    google.maps.event.addListener(drawingManager, "polylinecomplete", (polyline: any) => {
+      google.maps.event.addListener(polyline, "click", (e: any) => {
+        if(this.selectedPolyline != null){
+          this.selectedPolyline.setOptions({strokeColor: "black"})
+          this.selectedPolyline = null;
+        }
+        else{
+          this.selectedPolyline = polyline;
+          this.selectedPolyline.setOptions({strokeColor: "white"});
+        }
+
+      })
+      this.polylines.push(polyline);
+    })
   }
 }
