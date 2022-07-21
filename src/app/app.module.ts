@@ -21,6 +21,7 @@ import { TimePickerComponent } from './time-picker/time-picker.component';
 import { GameComponent } from './game/game.component';
 import { MenuComponent } from './menu/menu.component';
 import { StatsComponent } from './stats/stats.component';
+import { CreateComponent } from './create/create.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { StatsComponent } from './stats/stats.component';
     TimePickerComponent,
     GameComponent,
     MenuComponent,
-    StatsComponent
+    StatsComponent,
+    CreateComponent
   ],
   imports: [
     BrowserModule,

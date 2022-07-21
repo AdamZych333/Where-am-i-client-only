@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Map } from '../utils/map';
-import { Region, regions } from '../utils/region';
+import { Region } from '../utils/region';
 import { GoogleMapService } from './google-map.service';
 import { MapLoaderService } from './map-loader.service';
 import { RandomStreetviewService } from './random-streetview.service';
+import { RegionService } from './region.service';
 import { StreetViewService } from './street-view.service';
 
 @Injectable()
@@ -19,10 +20,10 @@ export class GameService {
   maps: Map[] = [];
   currentMap: Map = this.maps[0];
 
-  constructor(private googleMaps: GoogleMapService, private streetView: StreetViewService, private randomStreetView: RandomStreetviewService, private mapLoader: MapLoaderService ) {
+  constructor(regionService: RegionService,private googleMaps: GoogleMapService, private streetView: StreetViewService, private randomStreetView: RandomStreetviewService, private mapLoader: MapLoaderService ) {
     this.params = {
       seed: '',
-      region: regions[0],
+      region: regionService.getRegions()[0],
       timer: 180,
       noZoom: false,
       noMoving: false,

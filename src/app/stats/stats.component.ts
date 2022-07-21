@@ -23,7 +23,7 @@ export class StatsComponent {
     }, 0);
     if(sum === null) return 0;
 
-    return sum/maps.length;
+    return Math.round(sum/maps.length);
   }
 
   getBestScore(){

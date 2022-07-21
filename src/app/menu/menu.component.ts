@@ -33,7 +33,7 @@ export class MenuComponent implements OnInit {
     return this.returnValue.time;
   }
 
-  getMapNumber(){
+  getRoundNumber(){
     return this.data.mapNumber;
   }
 
